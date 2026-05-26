@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-26 10:28",
+  "updated_at": "2026-05-26 10:34",
   "total": 5,
   "posts": [
     {
@@ -11,7 +11,7 @@
       "url": "https://www.0404.go.kr/bbs/safetyNtc/detail/ATC0000000048524",
       "body": "",
       "summary": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "ATC0000000048523",
@@ -22,7 +22,7 @@
       "url": "https://www.0404.go.kr/bbs/safetyNtc/detail/ATC0000000048523",
       "body": "",
       "summary": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "ATC0000000048522",
@@ -33,7 +33,7 @@
       "url": "https://www.0404.go.kr/bbs/safetyNtc/detail/ATC0000000048522",
       "body": "",
       "summary": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "ATC0000000048521",
@@ -44,7 +44,7 @@
       "url": "https://www.0404.go.kr/bbs/safetyNtc/detail/ATC0000000048521",
       "body": "",
       "summary": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "ATC0000000048516",
@@ -55,7 +55,7 @@
       "url": "https://www.0404.go.kr/bbs/travelAlert/detail/ATC0000000048516",
       "body": "",
       "summary": "",
-      "is_new": true
+      "is_new": false
     }
   ]
 }

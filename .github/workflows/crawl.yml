@@ -25,7 +25,7 @@ jobs:
       - name: 크롤러 실행
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python crawler/crawl.py
+        run: python crawl.py
       - name: 변경사항 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"

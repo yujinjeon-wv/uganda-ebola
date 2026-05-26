@@ -208,7 +208,13 @@ function cleanBody(raw) {
   if (cutIdx !== -1) text = text.slice(0, cutIdx);
   const cutIdx2 = text.indexOf('긴급연락처');
   if (cutIdx2 !== -1) text = text.slice(0, cutIdx2);
-
+  
+// 대번호(1. 2. 3.) 앞에 빈 줄 추가
+  text = text.replace(/([^\n])([\n]?)(\d+\.)\s/g, '$1\n\n$3 ');
+  // 특수기호(▲ 🔺 📌 ㅇ △) 앞에 줄바꿈
+  text = text.replace(/([^\n])\s*(▲|🔺|📌|⚠️|🚨)/g, '$1\n$2');
+  // ㅇ 앞에 줄바꿈
+  text = text.replace(/([^\n])\s*(ㅇ\s)/g, '$1\n$2');
   const lines = text.split('\n')
     .map(l => l.trim())
     .filter(l => l.length > 3)

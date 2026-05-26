@@ -5,6 +5,7 @@ import re
 import time
 from datetime import datetime, timezone, timedelta
 from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 
 LIST_API      = "https://www.0404.go.kr/util/getSafetyTravelNtcList"
 UGANDA_NTN_CD = "166"
@@ -19,82 +20,71 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
 }
 
-# ── 날짜: 제목에서 파싱 (5.23) → 2026-05-23 ─────────────────────────
+GET_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Referer": "https://www.0404.go.kr/bbs/safetyNtc/list",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "ko-KR,ko;q=0.9",
+}
+
+# ── 날짜: 제목에서 파싱 (5.23) → 2026-05-23
 def parse_date_from_title(title, fallback_reg_dt):
-    # "(5.23)", "(5.20)" 등 패턴 추출
     m = re.search(r'\((\d{1,2})\.(\d{1,2})\)\s*$', title.strip())
     if m:
-        month = int(m.group(1))
-        day   = int(m.group(2))
-        year  = 2026
-        return f"{year}-{month:02d}-{day:02d}"
-    # fallback: regDt 배열
+        return f"2026-{int(m.group(1)):02d}-{int(m.group(2)):02d}"
     if fallback_reg_dt and len(fallback_reg_dt) >= 3:
         try: return f"{fallback_reg_dt[0]}-{fallback_reg_dt[1]:02d}-{fallback_reg_dt[2]:02d}"
         except: pass
     return ""
 
-# ── 본문: POST API로 가져오기 ─────────────────────────────────────────
-class HTMLStripper(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.parts = []
-        self._skip = False
-    def handle_starttag(self, tag, attrs):
-        if tag in ("script","style"): self._skip = True
-        if tag == "br": self.parts.append("\n")
-    def handle_endtag(self, tag):
-        if tag in ("script","style"): self._skip = False
-        if tag in ("p","div","li","tr"): self.parts.append("\n")
-    def handle_data(self, data):
-        if not self._skip: self.parts.append(data)
-
-def strip_html(html_str):
-    if not html_str: return ""
-    p = HTMLStripper(); p.feed(html_str)
-    text = "".join(p.parts)
-    for kw in ["비상연락처","긴급연락처","영사콜센터","☎","※ 한국에서","문의처"]:
+# ── HTML 파싱
+def extract_body_from_html(html):
+    soup = BeautifulSoup(html, "html.parser")
+    # 스크립트·스타일 제거
+    for tag in soup(["script", "style", "header", "footer", "nav"]):
+        tag.decompose()
+    # 본문 영역 찾기
+    content = (
+        soup.find("div", class_=re.compile(r"view.?content|cont.?view|board.?view|detail.?content", re.I))
+        or soup.find("div", id=re.compile(r"content|view|detail", re.I))
+        or soup.find("article")
+        or soup.find("main")
+    )
+    text = (content or soup).get_text(separator="\n")
+    # 비상연락처 이후 제거
+    for kw in ["비상연락처", "긴급연락처", "영사콜센터", "☎", "문의처"]:
         idx = text.find(kw)
         if idx != -1: text = text[:idx]
     text = re.sub(r"\n{3,}", "\n\n", text)
     text = re.sub(r"[ \t]+", " ", text)
     return text.strip()
 
+# ── 상세 페이지 본문 크롤링 (올바른 URL 구조 사용)
 def fetch_detail_body(pst_no, pst_type):
-    """여러 API 엔드포인트 시도"""
-    endpoints = [
-        ("POST", "https://www.0404.go.kr/util/getSafetyTravelNtcDetail",
-         {"pstNo": pst_no, "pstType": pst_type}),
-        ("POST", "https://www.0404.go.kr/util/getSafetyNtcDetail",
-         {"pstNo": pst_no}),
-        ("POST", "https://www.0404.go.kr/util/getTravelAlertDetail",
-         {"pstNo": pst_no}),
-    ]
-    for method, url, payload in endpoints:
-        try:
-            res = requests.post(url, headers=HEADERS, json=payload, timeout=12)
-            if not res.ok: continue
-            data = res.json()
-            detail = data.get("data") or {}
-            if isinstance(detail, list) and detail:
-                detail = detail[0]
-            html = detail.get("cnHtml") or detail.get("cnTxt") or detail.get("content") or ""
-            if html:
-                body = strip_html(html)
-                if len(body) > 50:
-                    print(f"    본문 획득 ({url.split('/')[-1]}): {len(body)}자")
-                    return body[:3000]
-        except Exception as e:
-            print(f"    엔드포인트 실패 ({url.split('/')[-1]}): {e}")
-        time.sleep(0.3)
-    print(f"    본문 없음 — 제목 기반으로 요약 진행")
+    type_path = {
+        "safetyNtc": "safetyNtc",
+        "embsyNtc": "safetyNtc",
+        "travelAlertAjmt": "travelAlert",
+    }
+    path = type_path.get(pst_type, "safetyNtc")
+    # 올바른 URL: /bbs/safetyNtc/ATC000.../detail
+    url = f"https://www.0404.go.kr/bbs/{path}/{pst_no}/detail"
+    try:
+        res = requests.get(url, headers=GET_HEADERS, timeout=15)
+        print(f"    상세 페이지 {res.status_code}: {url}")
+        if res.ok:
+            body = extract_body_from_html(res.text)
+            if len(body) > 100:
+                print(f"    본문 획득: {len(body)}자")
+                return body[:3000]
+            else:
+                print(f"    본문 너무 짧음: {len(body)}자")
+    except Exception as e:
+        print(f"    상세 페이지 실패: {e}")
     return ""
 
-# ── Gemini 요약 ───────────────────────────────────────────────────────
-GEMINI_MODELS = [
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-]
+# ── Gemini 요약
+GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash"]
 
 def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
     if not api_key: return ""
@@ -113,7 +103,7 @@ def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
         try:
             res = requests.post(url, json={
                 "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {"maxOutputTokens": 300, "temperature": 0.2}
+                "generationConfig": {"maxOutputTokens": 800, "temperature": 0.2}
             }, timeout=25)
             if res.ok:
                 text = res.json().get("candidates",[{}])[0].get("content",{}).get("parts",[{}])[0].get("text","").strip()
@@ -127,7 +117,7 @@ def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
         time.sleep(0.5)
     return ""
 
-# ── 유틸 ─────────────────────────────────────────────────────────────
+# ── 유틸
 def fetch_list():
     res = requests.post(LIST_API, headers=HEADERS, json={"pageSize": 200}, timeout=15)
     res.raise_for_status()
@@ -141,14 +131,15 @@ def is_uganda(post):
 def get_detail_url(post):
     type_path = {"safetyNtc":"safetyNtc","embsyNtc":"safetyNtc","travelAlertAjmt":"travelAlert"}
     path = type_path.get(post.get("pstType",""), "safetyNtc")
-    return f"https://www.0404.go.kr/bbs/{path}/detail/{post.get('pstNo','')}"
+    # 올바른 URL 구조
+    return f"https://www.0404.go.kr/bbs/{path}/{post.get('pstNo','')}/detail"
 
 def load_existing():
     if os.path.exists(OUTPUT_FILE):
         with open(OUTPUT_FILE,"r",encoding="utf-8") as f: return json.load(f)
     return {"updated_at":"","posts":[]}
 
-# ── 메인 ─────────────────────────────────────────────────────────────
+# ── 메인
 def run():
     gemini_key = os.environ.get("GEMINI_API_KEY","")
     print(f"Gemini API 키: {'있음' if gemini_key else '없음'}")

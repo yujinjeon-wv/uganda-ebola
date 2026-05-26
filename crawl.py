@@ -68,45 +68,28 @@ def fetch_detail_body(pst_no, pst_type):
     try:
         res = requests.get(url, headers=GET_HEADERS, timeout=15)
         print(f"    상세 페이지 {res.status_code}: {url}")
-        if res.ok:
-            soup = BeautifulSoup(res.text, "html.parser")
-            # 스크립트·스타일 제거
-            for tag in soup(["script", "style", "header", "footer", "nav", "noscript"]):
-                tag.decompose()
-            # 본문 영역 찾기 (여러 선택자 시도)
-            content = (
-                soup.find("div", class_=re.compile(r"view.?cont|cont.?view|board.?cont|bbs.?cont", re.I))
-                or soup.find("div", class_=re.compile(r"detail|content|body", re.I))
-                or soup.find("article")
-                or soup.find("main")
-            )
-            if content:
-                # 본문 안의 HTML 태그도 완전 제거
-                text = content.get_text(separator="\n")
-            else:
-                text = soup.get_text(separator="\n")
-
-            # 비상연락처 이후 제거
-            for kw in ["비상연락처", "긴급연락처", "영사콜센터", "☎", "문의처"]:
-                idx = text.find(kw)
-                if idx != -1:
-                    text = text[:idx]
-
-            # 공백 정리
-            lines = [line.strip() for line in text.splitlines()]
-            lines = [l for l in lines if l and len(l) > 1]
-            text = "\n".join(lines)
-            text = re.sub(r"\n{3,}", "\n\n", text)
-            text = text.strip()
-
-            if len(text) > 100:
-                print(f"    본문 획득: {len(text)}자")
-                return text[:3000]
-            else:
-                print(f"    본문 너무 짧음: {len(text)}자")
+        if not res.ok:
+            return ""
+        soup = BeautifulSoup(res.text, "html.parser")
+        # p 태그만 추출 (실제 본문)
+        paragraphs = soup.find_all("p")
+        lines = []
+        for p in paragraphs:
+            text = p.get_text(separator=" ").strip()
+            if len(text) > 5:
+                lines.append(text)
+        body = "\n".join(lines)
+        # 비상연락처 이후 제거
+        for kw in ["비상연락처", "긴급연락처", "영사콜센터", "☎", "문의처"]:
+            idx = body.find(kw)
+            if idx != -1:
+                body = body[:idx]
+        body = body.strip()
+        print(f"    본문 획득: {len(body)}자")
+        return body[:3000]
     except Exception as e:
         print(f"    상세 페이지 실패: {e}")
-    return ""
+        return ""
 
 # ── Gemini 요약
 GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash"]

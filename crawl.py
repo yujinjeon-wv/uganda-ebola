@@ -4,7 +4,6 @@ import os
 import re
 import time
 from datetime import datetime, timezone, timedelta
-from html.parser import HTMLParser
 from bs4 import BeautifulSoup
 
 LIST_API      = "https://www.0404.go.kr/util/getSafetyTravelNtcList"
@@ -27,7 +26,7 @@ GET_HEADERS = {
     "Accept-Language": "ko-KR,ko;q=0.9",
 }
 
-# ── 날짜: 제목에서 파싱 (5.23) → 2026-05-23
+# ── 날짜: 제목에서 파싱
 def parse_date_from_title(title, fallback_reg_dt):
     m = re.search(r'\((\d{1,2})\.(\d{1,2})\)\s*$', title.strip())
     if m:
@@ -37,29 +36,27 @@ def parse_date_from_title(title, fallback_reg_dt):
         except: pass
     return ""
 
-# ── HTML 파싱
-def extract_body_from_html(html):
+# ── HTML → 깨끗한 텍스트
+def clean_html_to_text(html):
     soup = BeautifulSoup(html, "html.parser")
-    # 스크립트·스타일 제거
-    for tag in soup(["script", "style", "header", "footer", "nav"]):
+    # 불필요한 태그 제거
+    for tag in soup(["script", "style", "header", "footer", "nav", "noscript"]):
         tag.decompose()
-    # 본문 영역 찾기
-    content = (
-        soup.find("div", class_=re.compile(r"view.?content|cont.?view|board.?view|detail.?content", re.I))
-        or soup.find("div", id=re.compile(r"content|view|detail", re.I))
-        or soup.find("article")
-        or soup.find("main")
-    )
-    text = (content or soup).get_text(separator="\n")
+    # 텍스트 추출
+    text = soup.get_text(separator="\n")
     # 비상연락처 이후 제거
-    for kw in ["비상연락처", "긴급연락처", "영사콜센터", "☎", "문의처"]:
+    for kw in ["비상연락처", "긴급연락처", "영사콜센터", "☎", "문의처", "※ 한국에서"]:
         idx = text.find(kw)
-        if idx != -1: text = text[:idx]
+        if idx != -1:
+            text = text[:idx]
+    # 공백 정리
+    lines = [line.strip() for line in text.splitlines()]
+    lines = [l for l in lines if l]  # 빈 줄 제거
+    text = "\n".join(lines)
     text = re.sub(r"\n{3,}", "\n\n", text)
-    text = re.sub(r"[ \t]+", " ", text)
     return text.strip()
 
-# ── 상세 페이지 본문 크롤링 (올바른 URL 구조 사용)
+# ── 상세 페이지 본문 크롤링
 def fetch_detail_body(pst_no, pst_type):
     type_path = {
         "safetyNtc": "safetyNtc",
@@ -67,18 +64,46 @@ def fetch_detail_body(pst_no, pst_type):
         "travelAlertAjmt": "travelAlert",
     }
     path = type_path.get(pst_type, "safetyNtc")
-    # 올바른 URL: /bbs/safetyNtc/ATC000.../detail
     url = f"https://www.0404.go.kr/bbs/{path}/{pst_no}/detail"
     try:
         res = requests.get(url, headers=GET_HEADERS, timeout=15)
         print(f"    상세 페이지 {res.status_code}: {url}")
         if res.ok:
-            body = extract_body_from_html(res.text)
-            if len(body) > 100:
-                print(f"    본문 획득: {len(body)}자")
-                return body[:3000]
+            soup = BeautifulSoup(res.text, "html.parser")
+            # 스크립트·스타일 제거
+            for tag in soup(["script", "style", "header", "footer", "nav", "noscript"]):
+                tag.decompose()
+            # 본문 영역 찾기 (여러 선택자 시도)
+            content = (
+                soup.find("div", class_=re.compile(r"view.?cont|cont.?view|board.?cont|bbs.?cont", re.I))
+                or soup.find("div", class_=re.compile(r"detail|content|body", re.I))
+                or soup.find("article")
+                or soup.find("main")
+            )
+            if content:
+                # 본문 안의 HTML 태그도 완전 제거
+                text = content.get_text(separator="\n")
             else:
-                print(f"    본문 너무 짧음: {len(body)}자")
+                text = soup.get_text(separator="\n")
+
+            # 비상연락처 이후 제거
+            for kw in ["비상연락처", "긴급연락처", "영사콜센터", "☎", "문의처"]:
+                idx = text.find(kw)
+                if idx != -1:
+                    text = text[:idx]
+
+            # 공백 정리
+            lines = [line.strip() for line in text.splitlines()]
+            lines = [l for l in lines if l and len(l) > 1]
+            text = "\n".join(lines)
+            text = re.sub(r"\n{3,}", "\n\n", text)
+            text = text.strip()
+
+            if len(text) > 100:
+                print(f"    본문 획득: {len(text)}자")
+                return text[:3000]
+            else:
+                print(f"    본문 너무 짧음: {len(text)}자")
     except Exception as e:
         print(f"    상세 페이지 실패: {e}")
     return ""
@@ -88,14 +113,21 @@ GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash"]
 
 def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
     if not api_key: return ""
-    content = body[:2000] if body else f"제목: {title}"
+    content = body[:2500] if body else f"제목: {title}"
     prompt = (
-        f"다음은 외교부 해외안전여행의 우간다 안전공지입니다.\n\n"
-        f"제목: {title}\n유형: {pst_type_nm}\n날짜: {date}\n본문:\n{content}\n\n"
-        f"위 공지의 핵심 내용을 3~5문장으로 요약해주세요. "
-        f"독자는 6~7월 우간다 방문을 앞두고 방문 여부를 결정해야 하는 한국인입니다. "
-        f"에볼라 위험도, 발생 지역, 권고 행동 지침을 중심으로 써주세요. "
-        f"비상연락처·행정 안내는 생략하세요. "
+        f"다음은 외교부 해외안전여행의 우간다 안전공지 본문입니다.\n\n"
+        f"제목: {title}\n"
+        f"유형: {pst_type_nm}\n"
+        f"날짜: {date}\n"
+        f"본문:\n{content}\n\n"
+        f"위 공지의 핵심 내용을 4~6문장으로 요약해주세요.\n"
+        f"독자는 6~7월 우간다 방문을 앞두고 방문 여부를 결정해야 하는 한국인입니다.\n"
+        f"다음 내용을 중심으로 써주세요:\n"
+        f"- 현재 확진자 수 및 사망자 수 (있으면)\n"
+        f"- 구체적 발생 지역\n"
+        f"- 외교부 또는 WHO의 권고 사항\n"
+        f"- 방문자가 취해야 할 행동 지침\n"
+        f"비상연락처, 행정 안내는 생략하세요.\n"
         f"마크다운 없이 plain text로만 답변하세요."
     )
     for model in GEMINI_MODELS:
@@ -103,12 +135,12 @@ def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
         try:
             res = requests.post(url, json={
                 "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {"maxOutputTokens": 800, "temperature": 0.2}
-            }, timeout=25)
+                "generationConfig": {"maxOutputTokens": 1024, "temperature": 0.2}
+            }, timeout=30)
             if res.ok:
                 text = res.json().get("candidates",[{}])[0].get("content",{}).get("parts",[{}])[0].get("text","").strip()
                 if text:
-                    print(f"    Gemini({model}) 요약 완료")
+                    print(f"    Gemini({model}) 요약 완료: {len(text)}자")
                     return text
             else:
                 print(f"    Gemini({model}) 오류: {res.status_code}")
@@ -131,7 +163,6 @@ def is_uganda(post):
 def get_detail_url(post):
     type_path = {"safetyNtc":"safetyNtc","embsyNtc":"safetyNtc","travelAlertAjmt":"travelAlert"}
     path = type_path.get(post.get("pstType",""), "safetyNtc")
-    # 올바른 URL 구조
     return f"https://www.0404.go.kr/bbs/{path}/{post.get('pstNo','')}/detail"
 
 def load_existing():
@@ -163,11 +194,13 @@ def run():
         body     = cached.get("body","")
         summary  = cached.get("summary","")
 
+        # 새 글이거나 요약이 없으면 처리
         if is_new or not summary:
             if is_new: new_count += 1
-            print(f"\n  글: {title[:45]}")
+            print(f"\n  글: {title[:50]}")
             print(f"    날짜: {date}")
-            if not body:
+            # body가 HTML 섞인 거면 다시 크롤링
+            if not body or "<p " in body or "<span" in body:
                 body = fetch_detail_body(post_id, pst_type)
             if gemini_key:
                 print(f"    → Gemini 요약 생성 중...")

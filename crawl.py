@@ -3,8 +3,10 @@ import json
 import os
 import re
 import time
+import glob
 from datetime import datetime, timezone, timedelta
 from bs4 import BeautifulSoup
+from pypdf import PdfReader
 
 LIST_API      = "https://www.0404.go.kr/util/getSafetyTravelNtcList"
 UGANDA_NTN_CD = "166"
@@ -18,98 +20,45 @@ HEADERS = {
     "Referer": "https://www.0404.go.kr/bbs/safetyNtc/list",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
 }
-
 GET_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Referer": "https://www.0404.go.kr/bbs/safetyNtc/list",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "ko-KR,ko;q=0.9",
 }
 
-# 제목에서 날짜 파싱
-def parse_date_from_title(title, fallback_reg_dt):
-    m = re.search(r'\((\d{1,2})\.(\d{1,2})\)\s*$', title.strip())
-    if m:
-        return f"2026-{int(m.group(1)):02d}-{int(m.group(2)):02d}"
-    if fallback_reg_dt and len(fallback_reg_dt) >= 3:
-        try: return f"{fallback_reg_dt[0]}-{fallback_reg_dt[1]:02d}-{fallback_reg_dt[2]:02d}"
-        except: pass
-    return ""
+# ── Gemini 요약 ───────────────────────────────────────────────────────
+GEMINI_MODELS = ["gemini-2.0-flash", "gemini-2.5-flash"]
 
-# 상세 페이지에서 본문만 추출
-def fetch_detail_body(pst_no, pst_type):
-    type_path = {
-        "safetyNtc": "safetyNtc",
-        "embsyNtc": "safetyNtc",
-        "travelAlertAjmt": "travelAlertAjmt",
-    }
-    path = type_path.get(pst_type, "safetyNtc")
-    url = f"https://www.0404.go.kr/bbs/{path}/{pst_no}/detail"
-    try:
-        res = requests.get(url, headers=GET_HEADERS, timeout=15)
-        print(f"    상세 페이지 {res.status_code}: {url}")
-        if not res.ok:
-            return ""
-        soup = BeautifulSoup(res.text, "html.parser")
-
-        # 스크립트·스타일·네비 제거
-        for tag in soup(["script", "style", "header", "footer", "nav", "noscript"]):
-            tag.decompose()
-
-        # 본문 컨테이너 찾기 — 외교부 사이트 구조상 .board_view 또는 .view_cont 안에 있음
-        container = (
-            soup.find("div", class_=re.compile(r"board.?view|view.?cont|bbs.?view|detail.?cont", re.I))
-            or soup.find("div", id=re.compile(r"content|view", re.I))
-            or soup.find("article")
+def summarize_with_gemini(title, content, source_type, date, api_key, lang="ko"):
+    if not api_key: return ""
+    if source_type == "gc":
+        prompt = (
+            f"다음은 World Vision 본부에서 발행한 Global Advisory (내부 공문)입니다.\n\n"
+            f"제목: {title}\n날짜: {date}\n내용:\n{content[:2500]}\n\n"
+            f"위 공문의 핵심 내용을 한국어로 4~6문장으로 요약해주세요.\n"
+            f"다음을 중심으로 써주세요:\n"
+            f"- 여행 스탠스 (travel stance): 어느 지역 여행이 금지/제한되는지\n"
+            f"- 현지 직원에 대한 지침\n"
+            f"- 주요 건강 예방 수칙\n"
+            f"마크다운 없이 plain text로만 답변하세요."
+        )
+    elif source_type == "no":
+        prompt = (
+            f"다음은 우간다 현지 직원이 보고한 업데이트 내용입니다.\n\n"
+            f"제목: {title}\n날짜: {date}\n내용:\n{content[:2500]}\n\n"
+            f"위 내용을 한국어로 3~4문장으로 간결하게 요약해주세요.\n"
+            f"마크다운 없이 plain text로만 답변하세요."
+        )
+    else:
+        prompt = (
+            f"다음은 외교부 해외안전여행의 우간다 안전공지입니다.\n\n"
+            f"제목: {title}\n날짜: {date}\n본문:\n{content[:2500]}\n\n"
+            f"위 공지의 핵심 내용을 4~6문장으로 요약해주세요.\n"
+            f"확진자 수, 발생 지역, 권고 행동 지침을 중심으로 써주세요.\n"
+            f"비상연락처, 행정 안내는 생략하세요.\n"
+            f"마크다운 없이 plain text로만 답변하세요."
         )
 
-        if container:
-            # 컨테이너 안의 p태그만
-            paragraphs = container.find_all("p")
-        else:
-            # 전체에서 p태그
-            paragraphs = soup.find_all("p")
-
-        lines = []
-        for p in paragraphs:
-            text = p.get_text(separator=" ").strip()
-            text = re.sub(r"\s+", " ", text)
-            if len(text) > 5:
-                lines.append(text)
-
-        body = "\n".join(lines)
-
-        # 비상연락처 이후 제거
-        for kw in ["비상연락처", "긴급연락처", "영사콜센터", "☎", "문의처", "※ 한국에서"]:
-            idx = body.find(kw)
-            if idx != -1:
-                body = body[:idx]
-
-        body = body.strip()
-        print(f"    본문 획득: {len(body)}자")
-        return body[:4000]
-
-    except Exception as e:
-        print(f"    상세 페이지 실패: {e}")
-        return ""
-
-# Gemini 요약
-GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash"]
-
-def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
-    if not api_key: return ""
-    soup = BeautifulSoup(body, "html.parser") if body else None
-    clean = soup.get_text(separator="\n") if soup else ""
-    content = clean[:2000] if clean else f"제목: {title}"
-    prompt = (
-        f"다음은 외교부 해외안전여행의 우간다 안전공지 본문입니다.\n\n"
-        f"제목: {title}\n유형: {pst_type_nm}\n날짜: {date}\n본문:\n{content}\n\n"
-        f"위 공지의 핵심 내용을 4~6문장으로 요약해주세요. "
-        f"독자는 6~7월 우간다 방문을 앞두고 방문 여부를 결정해야 하는 한국인입니다. "
-        f"확진자 수, 발생 지역, 권고 행동 지침을 중심으로 써주세요. "
-        f"비상연락처, 행정 안내는 생략하세요. "
-        f"마크다운 없이 plain text로만 답변하세요."
-    )
     for model in GEMINI_MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
         try:
@@ -126,8 +75,49 @@ def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
                 print(f"    Gemini({model}) 오류: {res.status_code}")
         except Exception as e:
             print(f"    Gemini({model}) 실패: {e}")
-        time.sleep(1)
+        time.sleep(2)
     return ""
+
+# ── 외교부 크롤링 ─────────────────────────────────────────────────────
+def parse_date_from_title(title, fallback_reg_dt):
+    m = re.search(r'\((\d{1,2})\.(\d{1,2})\)\s*$', title.strip())
+    if m:
+        return f"2026-{int(m.group(1)):02d}-{int(m.group(2)):02d}"
+    if fallback_reg_dt and len(fallback_reg_dt) >= 3:
+        try: return f"{fallback_reg_dt[0]}-{fallback_reg_dt[1]:02d}-{fallback_reg_dt[2]:02d}"
+        except: pass
+    return ""
+
+def fetch_detail_body(pst_no, pst_type):
+    type_path = {
+        "safetyNtc": "safetyNtc",
+        "embsyNtc": "safetyNtc",
+        "travelAlertAjmt": "travelAlertAjmt",
+    }
+    path = type_path.get(pst_type, "safetyNtc")
+    url = f"https://www.0404.go.kr/bbs/{path}/{pst_no}/detail"
+    try:
+        res = requests.get(url, headers=GET_HEADERS, timeout=15)
+        print(f"    상세 페이지 {res.status_code}: {url}")
+        if not res.ok: return ""
+        soup = BeautifulSoup(res.text, "html.parser")
+        for tag in soup(["script","style","header","footer","nav","noscript"]): tag.decompose()
+        paragraphs = soup.find_all("p")
+        lines = []
+        for p in paragraphs:
+            text = p.get_text(separator=" ").strip()
+            text = re.sub(r"\s+", " ", text)
+            if len(text) > 5: lines.append(text)
+        body = "\n".join(lines)
+        for kw in ["비상연락처","긴급연락처","영사콜센터","☎","문의처","※ 한국에서"]:
+            idx = body.find(kw)
+            if idx != -1: body = body[:idx]
+        body = body.strip()
+        print(f"    본문 획득: {len(body)}자")
+        return body[:4000]
+    except Exception as e:
+        print(f"    상세 페이지 실패: {e}")
+        return ""
 
 def fetch_list():
     res = requests.post(LIST_API, headers=HEADERS, json={"pageSize": 200}, timeout=15)
@@ -144,24 +134,122 @@ def get_detail_url(post):
     path = type_path.get(post.get("pstType",""), "safetyNtc")
     return f"https://www.0404.go.kr/bbs/{path}/{post.get('pstNo','')}/detail"
 
+# ── GC 업데이트 (PDF) ─────────────────────────────────────────────────
+def read_pdf(filepath):
+    try:
+        reader = PdfReader(filepath)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() or ""
+        return text.strip()
+    except Exception as e:
+        print(f"    PDF 읽기 실패 ({filepath}): {e}")
+        return ""
+
+def load_gc_posts(gemini_key, existing_map):
+    results = []
+    gc_files = glob.glob("data/gc/*.pdf")
+    for filepath in sorted(gc_files):
+        filename = os.path.basename(filepath)
+        post_id = f"gc_{filename}"
+        # 날짜: 파일명에서 추출 (YYYY-MM-DD 패턴)
+        m = re.search(r"(\d{4})[-_](\d{2})[-_](\d{2})", filename)
+        date = f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else ""
+        title = f"[GC] {filename.replace('.pdf','').replace('_',' ')}"
+
+        cached = existing_map.get(post_id, {})
+        body   = cached.get("body", "")
+        summary = cached.get("summary", "")
+
+        if not body:
+            print(f"\n  GC PDF: {filename}")
+            body = read_pdf(filepath)
+            print(f"    본문 획득: {len(body)}자")
+            if gemini_key and body:
+                print(f"    → Gemini 요약 생성 중...")
+                summary = summarize_with_gemini(title, body, "gc", date, gemini_key)
+            time.sleep(30)
+
+        results.append({
+            "id": post_id, "title": title,
+            "type": "gc", "type_name": "GC 업데이트",
+            "date": date, "url": "",
+            "body": body, "summary": summary, "is_new": post_id not in existing_map,
+        })
+    return results
+
+# ── NO 업데이트 (텍스트 파일) ─────────────────────────────────────────
+def load_no_posts(gemini_key, existing_map):
+    results = []
+    no_files = glob.glob("data/no/*.txt")
+    for filepath in sorted(no_files, reverse=True):
+        filename = os.path.basename(filepath)
+        post_id = f"no_{filename}"
+        cached = existing_map.get(post_id, {})
+        body   = cached.get("body", "")
+        summary = cached.get("summary", "")
+        date = ""
+        title = filename.replace(".txt","").replace("_"," ")
+
+        if not body:
+            print(f"\n  NO 업데이트: {filename}")
+            try:
+                with open(filepath, "r", encoding="utf-8") as f:
+                    raw = f.read()
+                # 메타데이터 파싱
+                lines = raw.strip().split("\n")
+                meta = {}
+                content_lines = []
+                in_content = False
+                for line in lines:
+                    if line.startswith("date:"):
+                        meta["date"] = line.replace("date:","").strip()
+                    elif line.startswith("title:"):
+                        meta["title"] = line.replace("title:","").strip()
+                    elif line.startswith("content:"):
+                        in_content = True
+                    elif in_content:
+                        content_lines.append(line)
+                date = meta.get("date", "")
+                title = meta.get("title", title)
+                body = "\n".join(content_lines).strip()
+                print(f"    본문 획득: {len(body)}자")
+                if gemini_key and body:
+                    print(f"    → Gemini 요약 생성 중...")
+                    summary = summarize_with_gemini(title, body, "no", date, gemini_key)
+                time.sleep(30)
+            except Exception as e:
+                print(f"    NO 파일 읽기 실패: {e}")
+
+        results.append({
+            "id": post_id, "title": title,
+            "type": "no", "type_name": "NO 업데이트",
+            "date": date, "url": "",
+            "body": body, "summary": summary, "is_new": post_id not in existing_map,
+        })
+    return results
+
+# ── 데이터 로드/저장 ──────────────────────────────────────────────────
 def load_existing():
     if os.path.exists(OUTPUT_FILE):
         with open(OUTPUT_FILE,"r",encoding="utf-8") as f: return json.load(f)
     return {"updated_at":"","posts":[]}
 
+# ── 메인 ─────────────────────────────────────────────────────────────
 def run():
     gemini_key = os.environ.get("GEMINI_API_KEY","")
     print(f"Gemini API 키: {'있음' if gemini_key else '없음'}")
-    print("외교부 목록 API 호출 중...")
+
+    existing     = load_existing()
+    existing_map = {p["id"]: p for p in existing.get("posts",[])}
+
+    # 1. 외교부 공지
+    print("\n=== 외교부 공지 크롤링 ===")
     all_posts = fetch_list()
     uganda_posts = [p for p in all_posts if is_uganda(p)]
     print(f"우간다 게시글: {len(uganda_posts)}건")
 
-    existing     = load_existing()
-    existing_map = {p["id"]: p for p in existing.get("posts",[])}
-    results      = []
-    new_count    = 0
-
+    mofa_results = []
     for p in uganda_posts:
         post_id  = str(p.get("pstNo",""))
         pst_type = p.get("pstType","")
@@ -172,29 +260,39 @@ def run():
         body     = cached.get("body","")
         summary  = cached.get("summary","")
 
-        if is_new or not body or "<p " in body or "<span" in body:
-            if is_new: new_count += 1
+        if is_new or not body:
             print(f"\n  글: {title[:50]}")
-            print(f"    날짜: {date}")
             body = fetch_detail_body(post_id, pst_type)
             if gemini_key and body:
                 print(f"    → Gemini 요약 생성 중...")
-                summary = summarize_with_gemini(title, body, p.get("pstTypeNm",""), date, gemini_key)
+                summary = summarize_with_gemini(title, body, "mofa", date, gemini_key)
             time.sleep(30)
 
-        results.append({
+        mofa_results.append({
             "id": post_id, "title": title,
             "type": pst_type, "type_name": p.get("pstTypeNm",""),
             "date": date, "url": get_detail_url(p),
             "body": body, "summary": summary, "is_new": is_new,
         })
 
+    # 2. GC 업데이트 (PDF)
+    print("\n=== GC 업데이트 (PDF) ===")
+    gc_results = load_gc_posts(gemini_key, existing_map)
+
+    # 3. NO 업데이트 (텍스트)
+    print("\n=== NO 업데이트 (텍스트) ===")
+    no_results = load_no_posts(gemini_key, existing_map)
+
+    # 날짜순 정렬 (최신순)
+    all_results = mofa_results + gc_results + no_results
+    all_results.sort(key=lambda x: x.get("date",""), reverse=True)
+
     now_kst = datetime.now(KST).strftime("%Y-%m-%d %H:%M")
-    output  = {"updated_at": now_kst, "total": len(results), "posts": results}
+    output  = {"updated_at": now_kst, "total": len(all_results), "posts": all_results}
     os.makedirs("data", exist_ok=True)
     with open(OUTPUT_FILE,"w",encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-    print(f"\n완료: {len(results)}건 / 신규: {new_count}건 / {now_kst}")
+    print(f"\n완료: {len(all_results)}건 / {now_kst}")
 
 if __name__ == "__main__":
     run()

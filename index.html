@@ -23,49 +23,59 @@
     html { scroll-behavior: smooth; }
     body { background: var(--bg); font-family: var(--sans); color: var(--text-1); line-height: 1.6; }
 
+    /* 헤더 */
     .hd { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-    .hd-in { max-width: 700px; margin: 0 auto; padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+    .hd-in { max-width: 1200px; margin: 0 auto; padding: 0 28px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
     .hd-left { display: flex; align-items: center; gap: 10px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: blink 2s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.85)} }
     .hd-title { font-size: 14px; font-weight: 600; }
     .hd-time { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
 
+    /* 배너 */
     .banner { background: var(--red-bg); border-bottom: 1px solid var(--red-bd); }
-    .banner-in { max-width: 700px; margin: 0 auto; padding: 14px 20px; display: flex; gap: 11px; }
+    .banner-in { max-width: 1200px; margin: 0 auto; padding: 14px 28px; display: flex; gap: 11px; }
     .banner-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
     .banner-ttl { font-size: 13px; font-weight: 600; color: var(--red); margin-bottom: 3px; }
     .banner-body { font-size: 13px; color: #7f1d1d; line-height: 1.55; }
     .banner-body a { color: var(--red); }
 
-    main { max-width: 700px; margin: 0 auto; padding: 32px 20px 80px; }
-    .lbl { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+    /* 2단 레이아웃 */
+    .page-wrap { max-width: 1200px; margin: 0 auto; padding: 28px 28px 80px; display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
 
-    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 32px; }
+    /* 왼쪽 사이드바 */
+    .sidebar { position: sticky; top: 68px; display: flex; flex-direction: column; gap: 16px; }
+
+    .lbl { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
+
+    /* 통계 */
+    .stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
     .stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 14px; }
     .stat-n { font-family: var(--mono); font-size: 22px; font-weight: 500; line-height: 1; margin-bottom: 4px; }
     .stat-l { font-size: 11px; color: var(--text-2); }
     .cr{color:var(--red)} .ca{color:var(--amber)} .cp{color:var(--purple)} .cg{color:var(--green)}
 
-    .sit { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 32px; }
-    .sit-hd { padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    /* 상황 요약 */
+    .sit { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .sit-hd { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
     .sit-row { display: flex; border-bottom: 1px solid var(--border); }
     .sit-row:last-child { border-bottom: none; }
-    .sit-k { width: 90px; flex-shrink: 0; padding: 11px 16px; font-size: 12px; color: var(--text-3); background: #faf9f7; border-right: 1px solid var(--border); display: flex; align-items: center; }
-    .sit-v { padding: 11px 16px; font-size: 13px; line-height: 1.55; flex: 1; }
-    .pill { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; margin-right: 5px; vertical-align: middle; }
+    .sit-k { width: 80px; flex-shrink: 0; padding: 9px 12px; font-size: 11px; color: var(--text-3); background: #faf9f7; border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 10px; }
+    .sit-v { padding: 9px 12px; font-size: 12px; line-height: 1.55; flex: 1; }
+    .pill { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; margin-right: 4px; vertical-align: middle; }
     .pill-r { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bd); }
 
     /* 필터 탭 */
-    .filter-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+    .filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
     .tab { font-size: 12px; padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); cursor: pointer; transition: all .15s; font-family: var(--sans); }
     .tab:hover { border-color: var(--border-strong); }
     .tab.active { background: var(--text-1); color: #fff; border-color: var(--text-1); }
 
-    .feed-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    /* 타임라인 */
+    .feed-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
     .feed-cnt { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
 
-    .tl { position: relative; display: flex; flex-direction: column; gap: 14px; }
+    .tl { position: relative; display: flex; flex-direction: column; gap: 12px; }
     .tl::before { content:''; position: absolute; left: 19px; top: 0; bottom: 0; width: 1px; background: var(--border); pointer-events: none; }
 
     .tl-item { display: flex; gap: 16px; align-items: flex-start; }
@@ -118,9 +128,15 @@
     footer { border-top: 1px solid var(--border); padding: 20px; text-align: center; font-size: 12px; color: var(--text-3); line-height: 1.9; }
     footer a { color: var(--text-3); }
 
-    @media(max-width:480px) {
+    /* 반응형 */
+    @media(max-width: 768px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .stats { grid-template-columns: repeat(4,1fr); }
+      .hd-in, .banner-in, .page-wrap { padding-left: 16px; padding-right: 16px; }
+    }
+    @media(max-width: 480px) {
       .stats { grid-template-columns: repeat(2,1fr); }
-      .stat-n { font-size: 20px; }
       .tl::before { left: 15px; }
       .tl-dot-wrap { width: 31px; }
     }
@@ -132,7 +148,7 @@
   <div class="hd-in">
     <div class="hd-left">
       <div class="dot"></div>
-      <span class="hd-title">우간다 에볼라 안전공지</span>
+      <span class="hd-title">우간다 에볼라 안전공지 모니터</span>
     </div>
     <span class="hd-time" id="updated-at">불러오는 중…</span>
   </div>
@@ -148,44 +164,56 @@
   </div>
 </div>
 
-<main>
-  <div class="lbl">공지 현황</div>
-  <div class="stats">
-    <div class="stat"><div class="stat-n cr" id="s-total">—</div><div class="stat-l">전체</div></div>
-    <div class="stat"><div class="stat-n cr" id="s-mofa">—</div><div class="stat-l">외교부 공지</div></div>
-    <div class="stat"><div class="stat-n cp" id="s-gc">—</div><div class="stat-l">GC 업데이트</div></div>
-    <div class="stat"><div class="stat-n cg" id="s-no">—</div><div class="stat-l">NO 업데이트</div></div>
-  </div>
+<div class="page-wrap">
 
-  <div class="sit">
-    <div class="sit-hd">🦠 현재 상황 요약</div>
-    <div class="sit-row"><div class="sit-k">바이러스</div><div class="sit-v">분디부교(Bundibugyo) 에볼라 변종 — <strong>백신·치료제 없음</strong></div></div>
-    <div class="sit-row"><div class="sit-k">WHO 경보</div><div class="sit-v"><span class="pill pill-r">PHEIC 선포</span> 국제공중보건위기상황 (2026.05.17)</div></div>
-    <div class="sit-row"><div class="sit-k">외교부 경보</div><div class="sit-v"><span class="pill pill-r">특별여행주의보</span> 우간다 전역 (2026.05.22 발령)</div></div>
-    <div class="sit-row"><div class="sit-k">발원지</div><div class="sit-v">콩고민주공화국 이투리주 → 우간다 국경 지역으로 확산</div></div>
-    <div class="sit-row"><div class="sit-k">전파 경로</div><div class="sit-v">감염자 혈액·체액 직접 접촉, 야생동물 접촉 (잠복기 2~21일)</div></div>
-    <div class="sit-row"><div class="sit-k">외교부 권고</div><div class="sit-v"><strong>방문 취소 또는 연기</strong> 강력 권고. 현지 체류 시 신변안전 특별 유의.</div></div>
-    <div class="sit-row"><div class="sit-k">대사관 연락</div><div class="sit-v">+256 776 875 996 (해외안전영사) · +256 774 478 376 (당직)</div></div>
-  </div>
+  <!-- 왼쪽 사이드바 -->
+  <aside class="sidebar">
 
-  <div class="feed-hd">
-    <div class="lbl" style="margin-bottom:0">전체 업데이트 타임라인</div>
-    <span class="feed-cnt" id="feed-count"></span>
-  </div>
+    <div>
+      <div class="lbl">공지 현황</div>
+      <div class="stats">
+        <div class="stat"><div class="stat-n cr" id="s-total">—</div><div class="stat-l">전체</div></div>
+        <div class="stat"><div class="stat-n cr" id="s-mofa">—</div><div class="stat-l">외교부</div></div>
+        <div class="stat"><div class="stat-n cp" id="s-gc">—</div><div class="stat-l">GC</div></div>
+        <div class="stat"><div class="stat-n cg" id="s-no">—</div><div class="stat-l">NO</div></div>
+      </div>
+    </div>
 
-  <!-- 필터 탭 -->
-  <div class="filter-tabs">
-    <button class="tab active" onclick="filterPosts('all', this)">전체</button>
-    <button class="tab" onclick="filterPosts('mofa', this)">외교부 공지</button>
-    <button class="tab" onclick="filterPosts('gc', this)">GC 업데이트</button>
-    <button class="tab" onclick="filterPosts('no', this)">NO 업데이트</button>
-  </div>
+    <div class="sit">
+      <div class="sit-hd">🦠 현재 상황 요약</div>
+      <div class="sit-row"><div class="sit-k">바이러스</div><div class="sit-v">분디부교(Bundibugyo) 에볼라 변종 — <strong>백신·치료제 없음</strong></div></div>
+      <div class="sit-row"><div class="sit-k">WHO 경보</div><div class="sit-v"><span class="pill pill-r">PHEIC 선포</span> 국제공중보건위기상황 (2026.05.17)</div></div>
+      <div class="sit-row"><div class="sit-k">외교부 경보</div><div class="sit-v"><span class="pill pill-r">특별여행주의보</span> 우간다 전역 (2026.05.22)</div></div>
+      <div class="sit-row"><div class="sit-k">발원지</div><div class="sit-v">콩고민주공화국 이투리주 → 우간다 국경 지역</div></div>
+      <div class="sit-row"><div class="sit-k">전파 경로</div><div class="sit-v">혈액·체액 직접 접촉 (잠복기 2~21일)</div></div>
+      <div class="sit-row"><div class="sit-k">외교부 권고</div><div class="sit-v"><strong>방문 취소 또는 연기</strong> 강력 권고</div></div>
+      <div class="sit-row"><div class="sit-k">대사관</div><div class="sit-v">+256 776 875 996 · +256 774 478 376</div></div>
+    </div>
 
-  <div class="tl" id="timeline">
-    <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div></div><div class="card" style="padding:16px"><div class="sk" style="height:12px;width:35%;margin-bottom:10px"></div><div class="sk" style="height:15px;width:80%;margin-bottom:6px"></div><div class="sk" style="height:12px;width:60%"></div></div></div>
-    <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div></div><div class="card" style="padding:16px"><div class="sk" style="height:12px;width:30%;margin-bottom:10px"></div><div class="sk" style="height:15px;width:90%;margin-bottom:6px"></div><div class="sk" style="height:12px;width:70%"></div></div></div>
-  </div>
-</main>
+  </aside>
+
+  <!-- 오른쪽 타임라인 -->
+  <main>
+    <div class="feed-hd">
+      <div class="lbl" style="margin-bottom:0">전체 업데이트 타임라인</div>
+      <span class="feed-cnt" id="feed-count"></span>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="tab active" onclick="filterPosts('all', this)">전체</button>
+      <button class="tab" onclick="filterPosts('mofa', this)">외교부 공지</button>
+      <button class="tab" onclick="filterPosts('gc', this)">GC 업데이트</button>
+      <button class="tab" onclick="filterPosts('no', this)">NO 업데이트</button>
+    </div>
+
+    <div class="tl" id="timeline">
+      <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div></div><div class="card" style="padding:16px"><div class="sk" style="height:12px;width:35%;margin-bottom:10px"></div><div class="sk" style="height:15px;width:80%;margin-bottom:6px"></div><div class="sk" style="height:12px;width:60%"></div></div></div>
+      <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div></div><div class="card" style="padding:16px"><div class="sk" style="height:12px;width:30%;margin-bottom:10px"></div><div class="sk" style="height:15px;width:90%;margin-bottom:6px"></div><div class="sk" style="height:12px;width:70%"></div></div></div>
+      <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div></div><div class="card" style="padding:16px"><div class="sk" style="height:12px;width:40%;margin-bottom:10px"></div><div class="sk" style="height:15px;width:75%;margin-bottom:6px"></div><div class="sk" style="height:12px;width:55%"></div></div></div>
+    </div>
+  </main>
+
+</div>
 
 <footer>
   데이터 출처: <a href="https://www.0404.go.kr/bbs/safetyNtc/list" target="_blank" rel="noopener">외교부 해외안전여행</a>

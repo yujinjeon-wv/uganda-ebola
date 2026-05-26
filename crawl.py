@@ -92,9 +92,8 @@ def fetch_detail_body(pst_no, pst_type):
 
 # ── Gemini 요약 ───────────────────────────────────────────────────────
 GEMINI_MODELS = [
+    "gemini-2.5-flash",
     "gemini-2.0-flash",
-    "gemini-1.5-flash",
-    "gemini-1.5-pro",
 ]
 
 def summarize_with_gemini(title, body, pst_type_nm, date, api_key):

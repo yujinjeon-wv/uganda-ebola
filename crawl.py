@@ -195,7 +195,7 @@ def run():
         summary  = cached.get("summary","")
 
         # 새 글이거나 요약이 없으면 처리
-        if is_new or not summary:
+        if is_new or not summary or "<p " in body or "<span" in body:
             if is_new: new_count += 1
             print(f"\n  글: {title[:50]}")
             print(f"    날짜: {date}")

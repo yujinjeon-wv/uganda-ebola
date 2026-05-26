@@ -7,6 +7,7 @@ import glob
 from datetime import datetime, timezone, timedelta
 from bs4 import BeautifulSoup
 from pypdf import PdfReader
+from docx import Document
 
 LIST_API      = "https://www.0404.go.kr/util/getSafetyTravelNtcList"
 UGANDA_NTN_CD = "166"
@@ -29,24 +30,22 @@ GET_HEADERS = {
 # ── Gemini 요약 ───────────────────────────────────────────────────────
 GEMINI_MODELS = ["gemini-2.0-flash", "gemini-2.5-flash"]
 
-def summarize_with_gemini(title, content, source_type, date, api_key, lang="ko"):
+def summarize_with_gemini(title, content, source_type, date, api_key):
     if not api_key: return ""
     if source_type == "gc":
         prompt = (
             f"다음은 World Vision 본부에서 발행한 Global Advisory (내부 공문)입니다.\n\n"
             f"제목: {title}\n날짜: {date}\n내용:\n{content[:2500]}\n\n"
             f"위 공문의 핵심 내용을 한국어로 4~6문장으로 요약해주세요.\n"
-            f"다음을 중심으로 써주세요:\n"
-            f"- 여행 스탠스 (travel stance): 어느 지역 여행이 금지/제한되는지\n"
-            f"- 현지 직원에 대한 지침\n"
-            f"- 주요 건강 예방 수칙\n"
+            f"여행 스탠스(어느 지역 여행이 금지/제한되는지), 현지 직원 지침, 주요 건강 예방 수칙을 중심으로 써주세요.\n"
             f"마크다운 없이 plain text로만 답변하세요."
         )
     elif source_type == "no":
         prompt = (
-            f"다음은 우간다 현지 직원이 보고한 업데이트 내용입니다.\n\n"
+            f"다음은 우간다 현지에서 작성된 업데이트 내용입니다.\n\n"
             f"제목: {title}\n날짜: {date}\n내용:\n{content[:2500]}\n\n"
-            f"위 내용을 한국어로 3~4문장으로 간결하게 요약해주세요.\n"
+            f"위 내용을 한국어로 4~6문장으로 요약해주세요.\n"
+            f"현재 상황, 확진자 수, 권고 행동 지침을 중심으로 써주세요.\n"
             f"마크다운 없이 plain text로만 답변하세요."
         )
     else:
@@ -58,7 +57,6 @@ def summarize_with_gemini(title, content, source_type, date, api_key, lang="ko")
             f"비상연락처, 행정 안내는 생략하세요.\n"
             f"마크다운 없이 plain text로만 답변하세요."
         )
-
     for model in GEMINI_MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
         try:
@@ -77,6 +75,35 @@ def summarize_with_gemini(title, content, source_type, date, api_key, lang="ko")
             print(f"    Gemini({model}) 실패: {e}")
         time.sleep(2)
     return ""
+
+# ── 파일 읽기 ─────────────────────────────────────────────────────────
+def read_pdf(filepath):
+    try:
+        reader = PdfReader(filepath)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() or ""
+        return text.strip()
+    except Exception as e:
+        print(f"    PDF 읽기 실패: {e}")
+        return ""
+
+def read_docx(filepath):
+    try:
+        doc = Document(filepath)
+        text = "\n".join([p.text for p in doc.paragraphs if p.text.strip()])
+        return text.strip()
+    except Exception as e:
+        print(f"    DOCX 읽기 실패: {e}")
+        return ""
+
+def read_txt(filepath):
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    except Exception as e:
+        print(f"    TXT 읽기 실패: {e}")
+        return ""
 
 # ── 외교부 크롤링 ─────────────────────────────────────────────────────
 def parse_date_from_title(title, fallback_reg_dt):
@@ -135,32 +162,18 @@ def get_detail_url(post):
     return f"https://www.0404.go.kr/bbs/{path}/{post.get('pstNo','')}/detail"
 
 # ── GC 업데이트 (PDF) ─────────────────────────────────────────────────
-def read_pdf(filepath):
-    try:
-        reader = PdfReader(filepath)
-        text = ""
-        for page in reader.pages:
-            text += page.extract_text() or ""
-        return text.strip()
-    except Exception as e:
-        print(f"    PDF 읽기 실패 ({filepath}): {e}")
-        return ""
-
 def load_gc_posts(gemini_key, existing_map):
     results = []
     gc_files = glob.glob("data/gc/*.pdf")
     for filepath in sorted(gc_files):
         filename = os.path.basename(filepath)
-        post_id = f"gc_{filename}"
-        # 날짜: 파일명에서 추출 (YYYY-MM-DD 패턴)
+        post_id  = f"gc_{filename}"
         m = re.search(r"(\d{4})[-_](\d{2})[-_](\d{2})", filename)
-        date = f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else ""
+        date  = f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else ""
         title = f"[GC] {filename.replace('.pdf','').replace('_',' ')}"
-
-        cached = existing_map.get(post_id, {})
-        body   = cached.get("body", "")
+        cached  = existing_map.get(post_id, {})
+        body    = cached.get("body", "")
         summary = cached.get("summary", "")
-
         if not body:
             print(f"\n  GC PDF: {filename}")
             body = read_pdf(filepath)
@@ -169,50 +182,66 @@ def load_gc_posts(gemini_key, existing_map):
                 print(f"    → Gemini 요약 생성 중...")
                 summary = summarize_with_gemini(title, body, "gc", date, gemini_key)
             time.sleep(30)
-
         results.append({
             "id": post_id, "title": title,
             "type": "gc", "type_name": "GC 업데이트",
             "date": date, "url": "",
-            "body": body, "summary": summary, "is_new": post_id not in existing_map,
+            "body": body, "summary": summary,
+            "is_new": post_id not in existing_map,
         })
     return results
 
-# ── NO 업데이트 (텍스트 파일) ─────────────────────────────────────────
+# ── NO 업데이트 (TXT / DOCX) ─────────────────────────────────────────
+def parse_no_txt(filepath):
+    raw = read_txt(filepath)
+    lines = raw.split("\n")
+    meta = {}
+    content_lines = []
+    in_content = False
+    for line in lines:
+        if line.startswith("date:"):
+            meta["date"] = line.replace("date:","").strip()
+        elif line.startswith("title:"):
+            meta["title"] = line.replace("title:","").strip()
+        elif line.startswith("content:"):
+            in_content = True
+        elif in_content:
+            content_lines.append(line)
+    return meta.get("date",""), meta.get("title",""), "\n".join(content_lines).strip()
+
 def load_no_posts(gemini_key, existing_map):
     results = []
-    no_files = glob.glob("data/no/*.txt")
-    for filepath in sorted(no_files, reverse=True):
+    # txt + docx 둘 다 처리
+    no_files = sorted(
+        glob.glob("data/no/*.txt") + glob.glob("data/no/*.docx"),
+        reverse=True
+    )
+    for filepath in no_files:
         filename = os.path.basename(filepath)
-        post_id = f"no_{filename}"
-        cached = existing_map.get(post_id, {})
-        body   = cached.get("body", "")
-        summary = cached.get("summary", "")
-        date = ""
-        title = filename.replace(".txt","").replace("_"," ")
+        post_id  = f"no_{filename}"
+        cached   = existing_map.get(post_id, {})
+        body     = cached.get("body", "")
+        summary  = cached.get("summary", "")
+        date, title = "", filename.replace(".txt","").replace(".docx","").replace("_"," ")
 
         if not body:
             print(f"\n  NO 업데이트: {filename}")
             try:
-                with open(filepath, "r", encoding="utf-8") as f:
-                    raw = f.read()
-                # 메타데이터 파싱
-                lines = raw.strip().split("\n")
-                meta = {}
-                content_lines = []
-                in_content = False
-                for line in lines:
-                    if line.startswith("date:"):
-                        meta["date"] = line.replace("date:","").strip()
-                    elif line.startswith("title:"):
-                        meta["title"] = line.replace("title:","").strip()
-                    elif line.startswith("content:"):
-                        in_content = True
-                    elif in_content:
-                        content_lines.append(line)
-                date = meta.get("date", "")
-                title = meta.get("title", title)
-                body = "\n".join(content_lines).strip()
+                if filename.endswith(".txt"):
+                    date, title, body = parse_no_txt(filepath)
+                elif filename.endswith(".docx"):
+                    body = read_docx(filepath)
+                    # 날짜: 파일명에서 추출
+                    m = re.search(r"(\d{4})[-_](\d{2})[-_](\d{2})", filename)
+                    if m:
+                        date = f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+                    # 날짜: 본문 첫 줄에서도 시도
+                    if not date:
+                        m2 = re.search(r"Date:\s*(\d+)\s+(\w+)\s+(\d{4})", body)
+                        if m2:
+                            months = {"January":"01","February":"02","March":"03","April":"04","May":"05","June":"06","July":"07","August":"08","September":"09","October":"10","November":"11","December":"12"}
+                            mon = months.get(m2.group(2), "01")
+                            date = f"{m2.group(3)}-{mon}-{int(m2.group(1)):02d}"
                 print(f"    본문 획득: {len(body)}자")
                 if gemini_key and body:
                     print(f"    → Gemini 요약 생성 중...")
@@ -225,7 +254,8 @@ def load_no_posts(gemini_key, existing_map):
             "id": post_id, "title": title,
             "type": "no", "type_name": "NO 업데이트",
             "date": date, "url": "",
-            "body": body, "summary": summary, "is_new": post_id not in existing_map,
+            "body": body, "summary": summary,
+            "is_new": post_id not in existing_map,
         })
     return results
 
@@ -245,7 +275,7 @@ def run():
 
     # 1. 외교부 공지
     print("\n=== 외교부 공지 크롤링 ===")
-    all_posts = fetch_list()
+    all_posts    = fetch_list()
     uganda_posts = [p for p in all_posts if is_uganda(p)]
     print(f"우간다 게시글: {len(uganda_posts)}건")
 
@@ -275,12 +305,12 @@ def run():
             "body": body, "summary": summary, "is_new": is_new,
         })
 
-    # 2. GC 업데이트 (PDF)
+    # 2. GC 업데이트
     print("\n=== GC 업데이트 (PDF) ===")
     gc_results = load_gc_posts(gemini_key, existing_map)
 
-    # 3. NO 업데이트 (텍스트)
-    print("\n=== NO 업데이트 (텍스트) ===")
+    # 3. NO 업데이트
+    print("\n=== NO 업데이트 (TXT/DOCX) ===")
     no_results = load_no_posts(gemini_key, existing_map)
 
     # 날짜순 정렬 (최신순)

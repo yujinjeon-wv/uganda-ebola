@@ -181,7 +181,7 @@ def load_gc_posts(gemini_key, existing_map):
             if gemini_key and body:
                 print(f"    → Gemini 요약 생성 중...")
                 summary = summarize_with_gemini(title, body, "gc", date, gemini_key)
-            time.sleep(30)
+            time.sleep(60)
         results.append({
             "id": post_id, "title": title,
             "type": "gc", "type_name": "GC 업데이트",
@@ -246,7 +246,7 @@ def load_no_posts(gemini_key, existing_map):
                 if gemini_key and body:
                     print(f"    → Gemini 요약 생성 중...")
                     summary = summarize_with_gemini(title, body, "no", date, gemini_key)
-                time.sleep(30)
+                time.sleep(60)
             except Exception as e:
                 print(f"    NO 파일 읽기 실패: {e}")
 
@@ -296,7 +296,7 @@ def run():
             if gemini_key and body:
                 print(f"    → Gemini 요약 생성 중...")
                 summary = summarize_with_gemini(title, body, "mofa", date, gemini_key)
-            time.sleep(30)
+            time.sleep(60)
 
         mofa_results.append({
             "id": post_id, "title": title,

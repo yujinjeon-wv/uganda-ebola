@@ -41,7 +41,7 @@ def fetch_detail_body(pst_no, pst_type):
     type_path = {
         "safetyNtc": "safetyNtc",
         "embsyNtc": "safetyNtc",
-        "travelAlertAjmt": "travelAlert",
+        "travelAlertAjmt": "travelAlertAjmt",
     }
     path = type_path.get(pst_type, "safetyNtc")
     url = f"https://www.0404.go.kr/bbs/{path}/{pst_no}/detail"
@@ -140,7 +140,7 @@ def is_uganda(post):
             or "우간다" in (post.get("ttlNm") or ""))
 
 def get_detail_url(post):
-    type_path = {"safetyNtc":"safetyNtc","embsyNtc":"safetyNtc","travelAlertAjmt":"travelAlert"}
+    type_path = {"safetyNtc":"safetyNtc","embsyNtc":"safetyNtc","travelAlertAjmt":"travelAlertAjmt"}
     path = type_path.get(post.get("pstType",""), "safetyNtc")
     return f"https://www.0404.go.kr/bbs/{path}/{post.get('pstNo','')}/detail"
 

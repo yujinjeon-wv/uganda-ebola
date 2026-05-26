@@ -146,7 +146,7 @@ def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
                 print(f"    Gemini({model}) 오류: {res.status_code}")
         except Exception as e:
             print(f"    Gemini({model}) 실패: {e}")
-        time.sleep(5)
+        time.sleep(30)
     return ""
 
 # ── 유틸

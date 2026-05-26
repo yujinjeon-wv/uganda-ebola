@@ -203,11 +203,17 @@ function cleanBody(raw) {
 
   // 줄별로 필터링
   const SKIP = ['해외안전정보','공지사항','최신안전소식','안전공지','여행경보 조정','공관안전공지','현지 상세소식','국가/지역별','위기상황별','분실/도난','부당한 체포','인질/납치','교통사고','자연재해','대규모시위','테러/폭발','마약소지','여행중 사망','보이스 피싱','전쟁/공습','Home','공유','프린트','조회수','등록일','구분','국가','우간다','주의'];
+  // 긴급연락처 이후 제거
+  const cutIdx = text.indexOf('[긴급 연락처]');
+  if (cutIdx !== -1) text = text.slice(0, cutIdx);
+  const cutIdx2 = text.indexOf('긴급연락처');
+  if (cutIdx2 !== -1) text = text.slice(0, cutIdx2);
+
   const lines = text.split('\n')
     .map(l => l.trim())
     .filter(l => l.length > 3)
     .filter(l => !SKIP.includes(l))
-    .filter(l => !/^\d{4}-\d{2}-\d{2}$/.test(l));  // 날짜 형식 제거
+    .filter(l => !/^\d{4}-\d{2}-\d{2}$/.test(l));
 
   // 본문 시작점 찾기 (숫자로 시작하는 줄부터)
   let startIdx = lines.findIndex(l => /^[1-9]\./.test(l) || /^[ㅇ△▲●■]/.test(l));

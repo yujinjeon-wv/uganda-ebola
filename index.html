@@ -8,394 +8,305 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #f9f8f6;
+      --bg: #f5f4f1;
       --surface: #ffffff;
-      --border: #e8e6e1;
-      --border-strong: #d4d0c8;
-      --text-primary: #1a1916;
-      --text-secondary: #6b6860;
-      --text-tertiary: #9e9b94;
-      --accent-red: #c0392b;
-      --accent-red-bg: #fdf1f0;
-      --accent-red-border: #f5c6c2;
-      --accent-amber: #b45309;
-      --accent-amber-bg: #fffbeb;
-      --accent-amber-border: #fde68a;
-      --accent-blue: #1d4ed8;
-      --accent-blue-bg: #eff6ff;
-      --accent-blue-border: #bfdbfe;
+      --border: #e8e5df;
+      --border-strong: #ccc9c0;
+      --text-1: #18170f;
+      --text-2: #5c5a52;
+      --text-3: #9b9890;
+      --red:    #c0392b;
+      --red-bg: #fdf1f0;
+      --red-bd: #f5c6c2;
+      --amber:  #b45309;
+      --amber-bg: #fffbeb;
+      --amber-bd: #fde68a;
+      --blue:   #1d4ed8;
+      --blue-bg: #eff6ff;
+      --blue-bd: #bfdbfe;
       --mono: 'DM Mono', monospace;
       --sans: 'Noto Sans KR', sans-serif;
+      --radius: 12px;
     }
-
     html { scroll-behavior: smooth; }
-
     body {
       background: var(--bg);
       font-family: var(--sans);
-      color: var(--text-primary);
+      color: var(--text-1);
       line-height: 1.6;
-      min-height: 100vh;
     }
 
     /* ── 헤더 ── */
-    .site-header {
+    .header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
     }
     .header-inner {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 680px; margin: 0 auto;
+      padding: 0 20px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .header-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .live-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--red);
+      animation: pulse-dot 2s ease-in-out infinite;
     }
-    .logo-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent-red);
-      animation: blink 2s ease-in-out infinite;
+    @keyframes pulse-dot {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:.4; transform:scale(.85); }
     }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-    .logo-text {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--text-primary);
-    }
-    .header-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-tertiary);
-    }
+    .header-title { font-size: 14px; font-weight: 600; letter-spacing:-.01em; }
+    .header-right { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
 
     /* ── 경보 배너 ── */
     .alert-banner {
-      background: var(--accent-red-bg);
-      border-bottom: 1px solid var(--accent-red-border);
-      padding: 14px 24px;
+      background: var(--red-bg);
+      border-bottom: 1px solid var(--red-bd);
     }
-    .alert-banner-inner {
-      max-width: 760px;
-      margin: 0 auto;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
+    .alert-inner {
+      max-width: 680px; margin: 0 auto;
+      padding: 14px 20px;
+      display: flex; align-items: flex-start; gap: 11px;
     }
-    .alert-icon {
-      font-size: 18px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .alert-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--accent-red);
-      margin-bottom: 3px;
-    }
-    .alert-body {
-      font-size: 13px;
-      color: #7f1d1d;
-      line-height: 1.5;
-    }
-    .alert-body a {
-      color: var(--accent-red);
-      text-underline-offset: 2px;
-    }
+    .alert-icon { font-size: 17px; flex-shrink:0; margin-top:1px; }
+    .alert-title { font-size: 13px; font-weight:600; color: var(--red); margin-bottom:3px; }
+    .alert-body  { font-size: 13px; color: #7f1d1d; line-height:1.55; }
+    .alert-body a { color: var(--red); }
 
     /* ── 메인 ── */
-    main {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 40px 24px 80px;
-    }
+    main { max-width: 680px; margin: 0 auto; padding: 32px 20px 80px; }
 
     /* ── 현황 카드 ── */
-    .status-section {
-      margin-bottom: 40px;
-    }
     .section-label {
       font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
-      margin-bottom: 12px;
+      font-size: 10.5px; font-weight:500;
+      letter-spacing:.08em; text-transform:uppercase;
+      color: var(--text-3); margin-bottom:12px;
     }
-    .status-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .status-card {
+    .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:32px; }
+    .stat-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
+      border-radius: var(--radius);
+      padding: 14px 16px;
     }
-    .status-card-num {
-      font-family: var(--mono);
-      font-size: 26px;
-      font-weight: 500;
-      line-height: 1;
-      margin-bottom: 5px;
-    }
-    .status-card-label {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-    .num-red   { color: var(--accent-red); }
-    .num-amber { color: var(--accent-amber); }
-    .num-blue  { color: var(--accent-blue); }
+    .stat-num { font-family: var(--mono); font-size:26px; font-weight:500; line-height:1; margin-bottom:4px; }
+    .stat-lbl { font-size:12px; color: var(--text-2); }
+    .c-red   { color: var(--red); }
+    .c-amber { color: var(--amber); }
+    .c-blue  { color: var(--blue); }
 
-    /* ── 에볼라 현황 요약 박스 ── */
-    .ebola-summary {
+    /* ── 상황 요약 박스 ── */
+    .situation-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px 22px;
-      margin-bottom: 40px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 32px;
     }
-    .ebola-summary h2 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .situation-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
     }
-    .ebola-row {
-      display: flex;
-      gap: 8px;
-      font-size: 13.5px;
-      line-height: 1.55;
-      padding: 8px 0;
+    .situation-row {
+      display: flex; gap: 0;
       border-bottom: 1px solid var(--border);
     }
-    .ebola-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .ebola-row:first-of-type { padding-top: 0; }
-    .ebola-key {
-      color: var(--text-tertiary);
-      font-size: 12px;
-      white-space: nowrap;
-      padding-top: 1px;
-      min-width: 80px;
+    .situation-row:last-child { border-bottom: none; }
+    .sit-key {
+      width: 90px; flex-shrink: 0;
+      padding: 11px 16px;
+      font-size: 12px; color: var(--text-3);
+      background: #faf9f7;
+      border-right: 1px solid var(--border);
+      display: flex; align-items: center;
     }
-    .ebola-val { color: var(--text-primary); }
-    .tag {
+    .sit-val {
+      padding: 11px 16px;
+      font-size: 13px; line-height: 1.55;
+      flex: 1;
+    }
+    .pill {
       display: inline-block;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 2px 8px;
-      border-radius: 20px;
-      margin-right: 4px;
+      font-size: 11px; font-weight:500;
+      padding: 2px 8px; border-radius: 20px;
+      margin-right: 5px; vertical-align: middle;
     }
-    .tag-red    { background: var(--accent-red-bg);   color: var(--accent-red);   border: 1px solid var(--accent-red-border); }
-    .tag-amber  { background: var(--accent-amber-bg); color: var(--accent-amber); border: 1px solid var(--accent-amber-border); }
-    .tag-blue   { background: var(--accent-blue-bg);  color: var(--accent-blue);  border: 1px solid var(--accent-blue-border); }
+    .pill-red   { background: var(--red-bg);   color: var(--red);   border:1px solid var(--red-bd); }
+    .pill-amber { background: var(--amber-bg); color: var(--amber); border:1px solid var(--amber-bd); }
+    .pill-blue  { background: var(--blue-bg);  color: var(--blue);  border:1px solid var(--blue-bd); }
 
-    /* ── 피드 ── */
-    .feed-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* ── 타임라인 피드 ── */
+    .feed-head {
+      display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 14px;
     }
-    .feed-count {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--text-tertiary);
-    }
-    .feed-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .feed-count { font-family: var(--mono); font-size:11px; color: var(--text-3); }
+
+    .timeline { position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 19px; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
     }
 
-    .post-card {
+    .tl-item {
+      display: flex; gap: 16px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .tl-dot-wrap {
+      flex-shrink: 0;
+      width: 39px;
+      display: flex; flex-direction: column; align-items: center;
+      padding-top: 16px;
+    }
+    .tl-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid var(--surface);
+      box-shadow: 0 0 0 1.5px var(--border-strong);
+      background: var(--surface);
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .tl-dot.dot-red   { background: var(--red);   box-shadow: 0 0 0 1.5px var(--red); }
+    .tl-dot.dot-amber { background: var(--amber); box-shadow: 0 0 0 1.5px var(--amber); }
+    .tl-dot.dot-blue  { background: var(--blue);  box-shadow: 0 0 0 1.5px var(--blue); }
+
+    .tl-card {
+      flex: 1;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: var(--radius);
       overflow: hidden;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color .15s, box-shadow .15s;
     }
-    .post-card:hover {
+    .tl-card:hover {
       border-color: var(--border-strong);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
     }
-    .post-card.is-new {
-      border-left: 3px solid var(--accent-red);
-    }
+    .tl-card.is-new { border-left: 3px solid var(--red); }
 
-    .post-card-top {
-      padding: 16px 18px 12px;
+    .card-head {
+      padding: 14px 16px 10px;
     }
-    .post-card-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
+    .card-meta {
+      display: flex; align-items: center; gap: 7px;
+      flex-wrap: wrap; margin-bottom: 8px;
     }
     .type-badge {
-      font-size: 11px;
-      font-weight: 500;
-      padding: 2px 8px;
-      border-radius: 20px;
+      font-size: 11px; font-weight:500;
+      padding: 2px 8px; border-radius: 20px;
     }
-    .type-safetyNtc    { background: var(--accent-red-bg);   color: var(--accent-red);   border: 1px solid var(--accent-red-border); }
-    .type-travelAlert  { background: var(--accent-amber-bg); color: var(--accent-amber); border: 1px solid var(--accent-amber-border); }
-    .type-embsyNtc     { background: var(--accent-blue-bg);  color: var(--accent-blue);  border: 1px solid var(--accent-blue-border); }
-
-    .post-date {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-tertiary);
+    .badge-red   { background: var(--red-bg);   color: var(--red);   border:1px solid var(--red-bd); }
+    .badge-amber { background: var(--amber-bg); color: var(--amber); border:1px solid var(--amber-bd); }
+    .badge-blue  { background: var(--blue-bg);  color: var(--blue);  border:1px solid var(--blue-bd); }
+    .card-date { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+    .new-pill {
+      font-size: 10px; font-weight:600; color: var(--red);
+      background: var(--red-bg); border: 1px solid var(--red-bd);
+      padding: 1px 6px; border-radius: 20px;
     }
-    .new-badge {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--accent-red);
-      background: var(--accent-red-bg);
-      border: 1px solid var(--accent-red-border);
-      padding: 1px 6px;
-      border-radius: 20px;
-      letter-spacing: 0.03em;
+    .card-title {
+      font-size: 15px; font-weight: 500; line-height: 1.5;
+      color: var(--text-1);
     }
 
-    .post-title {
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 1.5;
-      color: var(--text-primary);
-      margin-bottom: 2px;
-    }
-
-    .post-summary {
-      background: var(--bg);
+    /* 요약 영역 */
+    .card-summary {
       border-top: 1px solid var(--border);
-      padding: 12px 18px;
+      padding: 13px 16px;
+      background: #faf9f7;
     }
-    .summary-label {
+    .summary-lbl {
       font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
-      margin-bottom: 5px;
+      font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 6px;
     }
     .summary-text {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.65;
+      font-size: 13.5px; color: var(--text-2);
+      line-height: 1.7;
+      white-space: pre-line;
     }
-    .summary-empty {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      font-style: italic;
-    }
+    .summary-none { font-size: 12px; color: var(--text-3); font-style: italic; }
 
-    .post-footer {
-      padding: 10px 18px;
+    /* 원문 링크 */
+    .card-foot {
+      padding: 9px 16px;
       border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: flex-end;
+      display: flex; justify-content: flex-end;
     }
-    .source-link {
-      font-size: 12px;
-      color: var(--text-tertiary);
+    .src-link {
+      font-size: 12px; color: var(--text-3);
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: color 0.15s;
+      display: flex; align-items: center; gap: 4px;
+      transition: color .15s;
     }
-    .source-link:hover { color: var(--text-primary); }
-    .source-link svg { width: 12px; height: 12px; }
+    .src-link:hover { color: var(--text-1); }
 
-    /* ── 로딩 / 에러 ── */
-    .skeleton {
-      background: linear-gradient(90deg, var(--border) 25%, #f0ede8 50%, var(--border) 75%);
+    /* ── 스켈레톤 ── */
+    .skel {
+      background: linear-gradient(90deg, var(--border) 25%, #eceae4 50%, var(--border) 75%);
       background-size: 200% 100%;
-      animation: skeleton-move 1.4s infinite;
+      animation: skel-anim 1.4s infinite;
       border-radius: 4px;
     }
-    @keyframes skeleton-move {
-      0% { background-position: 200% 0; }
+    @keyframes skel-anim {
+      0%   { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
-    .sk-line { height: 13px; margin-bottom: 6px; }
 
-    .error-box {
-      background: var(--accent-red-bg);
-      border: 1px solid var(--accent-red-border);
-      border-radius: 10px;
-      padding: 20px;
-      font-size: 14px;
-      color: #7f1d1d;
+    /* ── 에러 ── */
+    .err-box {
+      background: var(--red-bg); border: 1px solid var(--red-bd);
+      border-radius: var(--radius); padding: 18px;
+      font-size: 13px; color: #7f1d1d; line-height: 1.6;
     }
 
     /* ── 푸터 ── */
-    .site-footer {
+    footer {
       border-top: 1px solid var(--border);
-      padding: 24px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-tertiary);
-      line-height: 1.8;
+      padding: 20px; text-align: center;
+      font-size: 12px; color: var(--text-3); line-height: 1.9;
     }
-    .site-footer a { color: var(--text-tertiary); text-underline-offset: 2px; }
+    footer a { color: var(--text-3); }
 
-    /* ── 반응형 ── */
     @media (max-width: 480px) {
-      .status-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-      .status-card { padding: 12px; }
-      .status-card-num { font-size: 22px; }
-      main { padding: 28px 16px 60px; }
-      .header-inner { padding: 0 16px; }
+      .stat-num { font-size: 22px; }
+      .timeline::before { left: 15px; }
+      .tl-dot-wrap { width: 31px; }
     }
   </style>
 </head>
 <body>
 
-<!-- 헤더 -->
-<header class="site-header">
+<header class="header">
   <div class="header-inner">
-    <div class="header-logo">
-      <div class="logo-dot"></div>
-      <span class="logo-text">우간다 에볼라 안전공지</span>
+    <div class="header-left">
+      <div class="live-dot"></div>
+      <span class="header-title">우간다 에볼라 안전공지</span>
     </div>
-    <span class="header-meta" id="updated-at">불러오는 중...</span>
+    <span class="header-right" id="updated-at">불러오는 중…</span>
   </div>
 </header>
 
-<!-- 경보 배너 -->
 <div class="alert-banner">
-  <div class="alert-banner-inner">
+  <div class="alert-inner">
     <span class="alert-icon">⚠️</span>
     <div>
       <div class="alert-title">외교부 특별여행주의보 발령 중 (2026.05.22~)</div>
       <div class="alert-body">
-        우간다 전역에 에볼라 바이러스 확산으로 특별여행주의보가 발령되었습니다.
-        외교부는 방문 예정자에게 <strong>취소 또는 연기</strong>를 권고하고 있습니다.
-        — <a href="https://www.0404.go.kr/bbs/safetyNtc/list" target="_blank" rel="noopener">외교부 해외안전여행 원문 보기 →</a>
+        우간다 전역 에볼라 바이러스 확산으로 특별여행주의보가 발령되었습니다.
+        외교부는 방문 예정자에게 <strong>취소 또는 연기</strong>를 권고합니다.
+        — <a href="https://www.0404.go.kr/bbs/safetyNtc/list" target="_blank" rel="noopener">외교부 원문 →</a>
       </div>
     </div>
   </div>
@@ -403,188 +314,186 @@
 
 <main>
 
-  <!-- 현황 수치 -->
-  <section class="status-section">
-    <div class="section-label">공지 현황</div>
-    <div class="status-grid">
-      <div class="status-card">
-        <div class="status-card-num num-red" id="stat-total">—</div>
-        <div class="status-card-label">전체 공지</div>
-      </div>
-      <div class="status-card">
-        <div class="status-card-num num-amber" id="stat-travel">—</div>
-        <div class="status-card-label">여행경보조정</div>
-      </div>
-      <div class="status-card">
-        <div class="status-card-num num-blue" id="stat-safety">—</div>
-        <div class="status-card-label">안전공지</div>
-      </div>
+  <!-- 수치 -->
+  <div class="section-label">공지 현황</div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-num c-red"  id="s-total">—</div>
+      <div class="stat-lbl">전체 공지</div>
     </div>
-  </section>
-
-  <!-- 에볼라 현황 요약 -->
-  <div class="ebola-summary">
-    <h2>🦠 현재 상황 요약</h2>
-    <div class="ebola-row">
-      <span class="ebola-key">바이러스</span>
-      <span class="ebola-val">분디부교(Bundibugyo) 에볼라 변종 — <strong>백신·치료제 없음</strong></span>
+    <div class="stat-card">
+      <div class="stat-num c-amber" id="s-travel">—</div>
+      <div class="stat-lbl">여행경보조정</div>
     </div>
-    <div class="ebola-row">
-      <span class="ebola-key">WHO 경보</span>
-      <span class="ebola-val">
-        <span class="tag tag-red">PHEIC 선포</span>
-        국제공중보건위기상황 선포 (2026.05.17)
-      </span>
-    </div>
-    <div class="ebola-row">
-      <span class="ebola-key">외교부 경보</span>
-      <span class="ebola-val">
-        <span class="tag tag-red">특별여행주의보</span>
-        우간다 전역 (2026.05.22 발령)
-      </span>
-    </div>
-    <div class="ebola-row">
-      <span class="ebola-key">발원지</span>
-      <span class="ebola-val">콩고민주공화국 이투리주 → 우간다 국경 지역으로 확산</span>
-    </div>
-    <div class="ebola-row">
-      <span class="ebola-key">전파 경로</span>
-      <span class="ebola-val">감염자 혈액·체액 직접 접촉, 야생동물 접촉 (잠복기 2~21일)</span>
-    </div>
-    <div class="ebola-row">
-      <span class="ebola-key">외교부 권고</span>
-      <span class="ebola-val"><strong>방문 취소 또는 연기</strong> 강력 권고. 체류 중인 경우 신변안전 특별 유의.</span>
-    </div>
-    <div class="ebola-row">
-      <span class="ebola-key">한국 대사관</span>
-      <span class="ebola-val">긴급연락 +256 776 875 996 (해외안전영사) / +256 774 478 376 (당직)</span>
+    <div class="stat-card">
+      <div class="stat-num c-blue" id="s-safety">—</div>
+      <div class="stat-lbl">안전공지</div>
     </div>
   </div>
 
-  <!-- 공지 피드 -->
-  <section>
-    <div class="feed-header">
-      <div class="section-label" style="margin-bottom:0">외교부 안전공지 전체 목록</div>
-      <span class="feed-count" id="feed-count"></span>
+  <!-- 상황 요약 -->
+  <div class="situation-card">
+    <div class="situation-head">🦠 현재 상황 요약</div>
+    <div class="situation-row">
+      <div class="sit-key">바이러스</div>
+      <div class="sit-val">분디부교(Bundibugyo) 에볼라 변종 — <strong>백신·치료제 없음</strong></div>
     </div>
-    <div class="feed-list" id="feed-list">
-      <!-- 스켈레톤 -->
-      <div class="post-card" style="padding:18px">
-        <div class="skeleton sk-line" style="width:40%;margin-bottom:10px"></div>
-        <div class="skeleton sk-line" style="width:80%"></div>
-        <div class="skeleton sk-line" style="width:65%"></div>
-      </div>
-      <div class="post-card" style="padding:18px">
-        <div class="skeleton sk-line" style="width:35%;margin-bottom:10px"></div>
-        <div class="skeleton sk-line" style="width:90%"></div>
-        <div class="skeleton sk-line" style="width:55%"></div>
-      </div>
-      <div class="post-card" style="padding:18px">
-        <div class="skeleton sk-line" style="width:38%;margin-bottom:10px"></div>
-        <div class="skeleton sk-line" style="width:75%"></div>
-        <div class="skeleton sk-line" style="width:60%"></div>
+    <div class="situation-row">
+      <div class="sit-key">WHO 경보</div>
+      <div class="sit-val"><span class="pill pill-red">PHEIC 선포</span> 국제공중보건위기상황 (2026.05.17)</div>
+    </div>
+    <div class="situation-row">
+      <div class="sit-key">외교부 경보</div>
+      <div class="sit-val"><span class="pill pill-red">특별여행주의보</span> 우간다 전역 (2026.05.22 발령)</div>
+    </div>
+    <div class="situation-row">
+      <div class="sit-key">발원지</div>
+      <div class="sit-val">콩고민주공화국 이투리주 → 우간다 국경 지역으로 확산</div>
+    </div>
+    <div class="situation-row">
+      <div class="sit-key">전파 경로</div>
+      <div class="sit-val">감염자 혈액·체액 직접 접촉, 야생동물 접촉 (잠복기 2~21일)</div>
+    </div>
+    <div class="situation-row">
+      <div class="sit-key">외교부 권고</div>
+      <div class="sit-val"><strong>방문 취소 또는 연기</strong> 강력 권고. 현지 체류 시 신변안전 특별 유의.</div>
+    </div>
+    <div class="situation-row">
+      <div class="sit-key">대사관 연락</div>
+      <div class="sit-val">+256 776 875 996 (해외안전영사) · +256 774 478 376 (당직)</div>
+    </div>
+  </div>
+
+  <!-- 타임라인 -->
+  <div class="feed-head">
+    <div class="section-label" style="margin-bottom:0">외교부 안전공지 타임라인</div>
+    <span class="feed-count" id="feed-count"></span>
+  </div>
+
+  <div class="timeline" id="timeline">
+    <!-- 스켈레톤 3개 -->
+    <div class="tl-item">
+      <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+      <div class="tl-card" style="padding:16px">
+        <div class="skel" style="height:12px;width:35%;margin-bottom:10px"></div>
+        <div class="skel" style="height:15px;width:80%;margin-bottom:6px"></div>
+        <div class="skel" style="height:13px;width:60%"></div>
       </div>
     </div>
-  </section>
+    <div class="tl-item">
+      <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+      <div class="tl-card" style="padding:16px">
+        <div class="skel" style="height:12px;width:30%;margin-bottom:10px"></div>
+        <div class="skel" style="height:15px;width:90%;margin-bottom:6px"></div>
+        <div class="skel" style="height:13px;width:70%"></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+      <div class="tl-card" style="padding:16px">
+        <div class="skel" style="height:12px;width:40%;margin-bottom:10px"></div>
+        <div class="skel" style="height:15px;width:75%;margin-bottom:6px"></div>
+        <div class="skel" style="height:13px;width:55%"></div>
+      </div>
+    </div>
+  </div>
 
 </main>
 
-<footer class="site-footer">
+<footer>
   데이터 출처: <a href="https://www.0404.go.kr/bbs/safetyNtc/list" target="_blank" rel="noopener">외교부 해외안전여행</a>
   &nbsp;·&nbsp; 하루 3회 자동 업데이트
   &nbsp;·&nbsp; 공식 정보는 반드시 원문에서 확인하세요
 </footer>
 
 <script>
-const TYPE_INFO = {
-  safetyNtc:       { label: '안전공지',     cls: 'type-safetyNtc' },
-  embsyNtc:        { label: '공관공지',     cls: 'type-embsyNtc' },
-  travelAlertAjmt: { label: '여행경보조정', cls: 'type-travelAlert' },
+const TYPE = {
+  safetyNtc:       { label:'안전공지',     cls:'badge-red',   dot:'dot-red' },
+  embsyNtc:        { label:'공관공지',     cls:'badge-blue',  dot:'dot-blue' },
+  travelAlertAjmt: { label:'여행경보조정', cls:'badge-amber', dot:'dot-amber' },
 };
 
-function typeInfo(t) {
-  return TYPE_INFO[t] || { label: t, cls: 'type-embsyNtc' };
-}
+function typeOf(t) { return TYPE[t] || { label: t, cls:'badge-blue', dot:'dot-blue' }; }
 
-function formatDate(d) {
+function fmtDate(d) {
   if (!d) return '';
-  // "2026-05-22" → "2026. 05. 22"
   const [y, m, day] = d.split('-');
   if (!y) return d;
   const diff = Math.floor((Date.now() - new Date(d)) / 86400000);
-  const base = `${y}.${m}.${day}`;
-  if (diff === 0) return `오늘 · ${base}`;
-  if (diff === 1) return `어제 · ${base}`;
-  if (diff < 7)  return `${diff}일 전 · ${base}`;
+  const base  = `${y}.${m}.${day}`;
+  if (diff === 0) return `오늘  ·  ${base}`;
+  if (diff === 1) return `어제  ·  ${base}`;
+  if (diff < 7)  return `${diff}일 전  ·  ${base}`;
   return base;
 }
 
-function renderCard(post) {
-  const { label, cls } = typeInfo(post.type);
-  const newBadge = post.is_new ? '<span class="new-badge">NEW</span>' : '';
-  const summary = post.summary
-    ? `<div class="post-summary"><div class="summary-label">AI 요약</div><div class="summary-text">${post.summary}</div></div>`
-    : `<div class="post-summary"><div class="summary-text summary-empty">요약 정보 없음 — 원문을 확인해주세요.</div></div>`;
+function renderItem(post) {
+  const { label, cls, dot } = typeOf(post.type);
+  const newPill = post.is_new ? '<span class="new-pill">NEW</span>' : '';
+
+  const summaryBlock = post.summary
+    ? `<div class="card-summary">
+        <div class="summary-lbl">AI 요약</div>
+        <div class="summary-text">${post.summary}</div>
+       </div>`
+    : `<div class="card-summary">
+        <div class="summary-text summary-none">요약 정보 없음 — 원문을 확인해주세요.</div>
+       </div>`;
 
   return `
-    <div class="post-card ${post.is_new ? 'is-new' : ''}">
-      <div class="post-card-top">
-        <div class="post-card-meta">
-          <span class="type-badge ${cls}">${label}</span>
-          <span class="post-date">${formatDate(post.date)}</span>
-          ${newBadge}
+    <div class="tl-item">
+      <div class="tl-dot-wrap">
+        <div class="tl-dot ${dot}"></div>
+      </div>
+      <div class="tl-card ${post.is_new ? 'is-new' : ''}">
+        <div class="card-head">
+          <div class="card-meta">
+            <span class="type-badge ${cls}">${label}</span>
+            <span class="card-date">${fmtDate(post.date)}</span>
+            ${newPill}
+          </div>
+          <div class="card-title">${post.title || '(제목 없음)'}</div>
         </div>
-        <div class="post-title">${post.title || '(제목 없음)'}</div>
+        ${summaryBlock}
+        <div class="card-foot">
+          <a href="${post.url}" class="src-link" target="_blank" rel="noopener">
+            외교부 원문 보기
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1.5 9.5L9.5 1.5M9.5 1.5H4.5M9.5 1.5V6.5"/>
+            </svg>
+          </a>
+        </div>
       </div>
-      ${summary}
-      <div class="post-footer">
-        <a href="${post.url}" class="source-link" target="_blank" rel="noopener">
-          원문 보기
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M2 10L10 2M10 2H5M10 2v5"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-  `;
+    </div>`;
 }
 
-async function loadData() {
+async function load() {
   try {
     const res = await fetch('./data/posts.json?t=' + Date.now());
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
-    // 업데이트 시각
     document.getElementById('updated-at').textContent =
       data.updated_at ? `${data.updated_at} KST 기준` : '';
 
-    // 통계
     const posts = data.posts || [];
-    document.getElementById('stat-total').textContent = posts.length;
-    document.getElementById('stat-travel').textContent =
-      posts.filter(p => p.type === 'travelAlertAjmt').length;
-    document.getElementById('stat-safety').textContent =
-      posts.filter(p => p.type === 'safetyNtc' || p.type === 'embsyNtc').length;
-
-    // 피드
+    document.getElementById('s-total').textContent  = posts.length;
+    document.getElementById('s-travel').textContent = posts.filter(p => p.type === 'travelAlertAjmt').length;
+    document.getElementById('s-safety').textContent = posts.filter(p => p.type !== 'travelAlertAjmt').length;
     document.getElementById('feed-count').textContent = `${posts.length}건`;
-    document.getElementById('feed-list').innerHTML =
-      posts.length
-        ? posts.map(renderCard).join('')
-        : '<div class="error-box">표시할 공지가 없습니다.</div>';
 
-  } catch (e) {
+    document.getElementById('timeline').innerHTML = posts.length
+      ? posts.map(renderItem).join('')
+      : '<div class="err-box">표시할 공지가 없습니다.</div>';
+
+  } catch(e) {
     document.getElementById('updated-at').textContent = '데이터 로드 실패';
-    document.getElementById('feed-list').innerHTML = `
-      <div class="error-box">
-        데이터를 불러오지 못했습니다.<br>
-        <small style="opacity:0.7">${e.message}</small>
-      </div>`;
+    document.getElementById('timeline').innerHTML =
+      `<div class="err-box">데이터를 불러오지 못했습니다.<br><small>${e.message}</small></div>`;
   }
 }
 
-loadData();
+load();
 </script>
 </body>
 </html>

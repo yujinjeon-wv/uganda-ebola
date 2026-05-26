@@ -431,13 +431,23 @@ function renderItem(post) {
   const { label, cls, dot } = typeOf(post.type);
   const newPill = post.is_new ? '<span class="new-pill">NEW</span>' : '';
 
-  const summaryBlock = post.summary
+  const rawBody = (post.body || '')
+    .replace(/<[^>]*>/g, ' ')      // HTML 태그 제거
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')  // HTML 엔티티 변환
+    .replace(/[ \t]+/g, ' ')       // 연속 공백 정리
+    .split('\n')
+    .map(l => l.trim())
+    .filter(l => l.length > 1)     // 빈 줄 제거
+    .slice(0, 20)                  // 최대 20줄
+    .join('\n');
+
+  const summaryBlock = rawBody
     ? `<div class="card-summary">
-        <div class="summary-lbl">AI 요약</div>
-        <div class="summary-text">${post.summary}</div>
+        <div class="summary-lbl">공지 내용</div>
+        <div class="summary-text">${rawBody}</div>
        </div>`
     : `<div class="card-summary">
-        <div class="summary-text summary-none">요약 정보 없음 — 원문을 확인해주세요.</div>
+        <div class="summary-text summary-none">원문을 확인해주세요.</div>
        </div>`;
 
   return `

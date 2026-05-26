@@ -115,7 +115,7 @@ def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
         try:
             res = requests.post(url, json={
                 "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {"maxOutputTokens": 1024, "temperature": 0.2}
+                "generationConfig": {"maxOutputTokens": 1024, "temperature": 0.2, "thinkingConfig": {"thinkingBudget": 0}}
             }, timeout=30)
             if res.ok:
                 text = res.json().get("candidates",[{}])[0].get("content",{}).get("parts",[{}])[0].get("text","").strip()

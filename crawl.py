@@ -113,7 +113,9 @@ GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash"]
 
 def summarize_with_gemini(title, body, pst_type_nm, date, api_key):
     if not api_key: return ""
-    content = body[:2500] if body else f"제목: {title}"
+    from bs4 import BeautifulSoup
+    clean_body = BeautifulSoup(body, "html.parser").get_text(separator="\n") if body else ""
+    content = clean_body[:2500] if clean_body else f"제목: {title}"
     prompt = (
         f"다음은 외교부 해외안전여행의 우간다 안전공지 본문입니다.\n\n"
         f"제목: {title}\n"

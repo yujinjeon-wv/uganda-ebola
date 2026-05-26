@@ -432,13 +432,14 @@ function renderItem(post) {
   const newPill = post.is_new ? '<span class="new-pill">NEW</span>' : '';
 
   const rawBody = (post.body || '')
-    .replace(/<[^>]*>/g, ' ')      // HTML 태그 제거
-    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')  // HTML 엔티티 변환
-    .replace(/[ \t]+/g, ' ')       // 연속 공백 정리
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+    .replace(/[ \t]+/g, ' ')
     .split('\n')
     .map(l => l.trim())
-    .filter(l => l.length > 1)     // 빈 줄 제거
-    .slice(0, 20)                  // 최대 20줄
+    .filter(l => l.length > 1)
+    .filter(l => !['해외안전정보','공지사항','최신안전소식','안전공지','여행경보','공관안전공지','현지 상세소식','국가/지역별','위기상황별','분실/도난','부당한 체포','인질/납치','교통사고','자연재해','대규모시위','테러/폭발','마약소지','여행중 사망','보이스 피싱','Home','공유','프린트'].some(kw => l.includes(kw)))
+    .slice(0, 25)
     .join('\n');
 
   const summaryBlock = rawBody

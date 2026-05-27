@@ -328,8 +328,15 @@ def run():
     print("\n=== NO 업데이트 (TXT/DOCX) ===")
     no_results = load_no_posts(gemini_key, existing_map)
 
+    # 수동으로 추가된 글 유지 (API에서 못 잡은 글)
+    api_ids = {p["id"] for p in mofa_results}
+    manual_posts = [p for p in existing.get("posts", []) 
+                    if p["id"] not in api_ids 
+                    and not p["id"].startswith("gc_") 
+                    and not p["id"].startswith("no_")]
+    
     # 날짜순 정렬 (최신순)
-    all_results = mofa_results + gc_results + no_results
+    all_results = mofa_results + manual_posts + gc_results + no_results
     all_results.sort(key=lambda x: x.get("date",""), reverse=True)
 
     now_kst = datetime.now(KST).strftime("%Y-%m-%d %H:%M")

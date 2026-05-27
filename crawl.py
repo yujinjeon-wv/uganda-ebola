@@ -38,7 +38,7 @@ def summarize_with_gemini(title, content, source_type, date, api_key):
             f"제목: {title}\n날짜: {date}\n내용:\n{content[:2500]}\n\n"
             f"위 공문의 핵심 내용을 한국어로 4~6문장으로 요약해주세요.\n"
             f"여행 스탠스(어느 지역 여행이 금지/제한되는지), 현지 직원 지침, 주요 건강 예방 수칙을 중심으로 써주세요.\n"
-            f"마크다운 없이 plain text로만 답변하세요."
+            f"불렛포인트(•) 항목으로 간결하게 답변하세요. 마크다운 없이 plain text로만 답변하세요."
         )
     elif source_type == "no":
         prompt = (

@@ -199,11 +199,12 @@ def parse_no_txt(filepath):
     content_lines = []
     in_content = False
     for line in lines:
-        if line.startswith("date:"):
-            meta["date"] = line.replace("date:","").strip()
-        elif line.startswith("title:"):
-            meta["title"] = line.replace("title:","").strip()
-        elif line.startswith("content:"):
+        stripped = line.strip()
+        if stripped.startswith("date:"):
+            meta["date"] = stripped.replace("date:","").strip()
+        elif stripped.startswith("title:"):
+            meta["title"] = stripped.replace("title:","").strip()
+        elif stripped.startswith("content:"):
             in_content = True
         elif in_content:
             content_lines.append(line)

@@ -147,9 +147,23 @@ def fetch_detail_body(pst_no, pst_type):
         return ""
 
 def fetch_list():
+    all_posts = []
+    # 전체 목록
     res = requests.post(LIST_API, headers=HEADERS, json={"pageSize": 500}, timeout=15)
     res.raise_for_status()
-    return res.json().get("data", [])
+    all_posts += res.json().get("data", [])
+    # 우간다 국가코드로 추가 호출
+    res2 = requests.post(LIST_API, headers=HEADERS, json={"pageSize": 100, "ntnCd": "166"}, timeout=15)
+    if res2.ok:
+        all_posts += res2.json().get("data", [])
+    # 중복 제거
+    seen = set()
+    result = []
+    for p in all_posts:
+        if p.get("pstNo") not in seen:
+            seen.add(p.get("pstNo"))
+            result.append(p)
+    return result
 
 def is_uganda(post):
     return (post.get("ntnCd") == UGANDA_NTN_CD

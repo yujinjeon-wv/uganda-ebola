@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-27 14:17",
+  "updated_at": "2026-05-27 14:34",
   "total": 11,
   "posts": [
     {
@@ -14,15 +14,37 @@
       "is_new": true
     },
     {
+      "id": "no_[DLO] 소통 내용 | 2026-05-26.txt",
+      "title": "DLO 업데이트 (5.26)",
+      "type": "no",
+      "type_name": "NO 업데이트",
+      "date": "2026-05-26",
+      "url": "",
+      "body": "DRC currently is vulnerable, and the challenge is that most people at the eastern side of DRC access medical services from Uganda.\nThis may make Uganda a hotspot too, but the good thing is that Uganda has build a good tracking system, which makes the Ebola prevalence still low.\n6월 예정된 출장 2건(콘2팀, UX팀)은 예정대로 진행된다는 전제 하에 준비하기로 함.\n동시에 후속지원(콘2팀, 미셀팀)도 계속해서 진행 팔로업 중.\nDLO가 감염되지 않도록 각별히 주의 요청하였으며, 가능하다면 후속지원은 근처 ADP 협조를 얻는 쪽으로 논의함. 필요 시 DLO 매니저가 ADP 매니저에게 협조요청 예정.",
+      "summary": "• 현재 DRC 동부 지역 주민들이 우간다에서 의료 서비스를 이용하고 있어 우간다가 에볼라 핫스팟이 될 위험이 있습니다.\n• 다행히 우간다는 추적 시스템이 잘 구축되어 있어 에볼라 유병률은 아직 낮은 수준입니다.\n• 6월 예정된 콘2팀과 UX팀의 출장은 예정대로 준비하며, 콘2팀과 미셀팀의 후속 지원도 계속 팔로우업 중입니다.\n• DLO의 감염 예방을 위해 각별한 주의가 요청되었으며, 후속 지원은 가능한 경우 인근 ADP의 협조를 얻는 방향으로 논의 중입니다.\n• 필요 시 DLO 매니저가 ADP 매니저에게 협조를 요청할 예정입니다.",
+      "is_new": true
+    },
+    {
       "id": "ATC0000000048527",
       "title": "(우간다) 에볼라 신규 확진자 2명 추가 발생 관련 안전공지(6)(5.25)",
       "type": "safetyNtc",
       "type_name": "안전공지",
       "date": "2026-05-25",
-      "url": "https://www.0404.go.kr/bbs/embsyNtc/1335704/detail?ntnCd=166",
+      "url": "https://www.0404.go.kr/bbs/safetyNtc/ATC0000000048527/detail",
       "body": "1. 우간다 보건 당국을 통해 확인한 바에 따르면, 5.25.(월) 기준 우간다 내 에볼라(분디부조병) 확진자는 총 7명(사망 1명)이며, 확진자 관련 누적 접촉자는 총 400명이 넘는 것으로 파악됩니다.\nㅇ 이 중 약 392명은 Kampala Metropolitan Area에 거주하는 것으로 파악되며, 현재 364명이 적극 추적관리 대상\n- 또한 101명은 의무 격리 중이며, 일부 접촉자는 격리시설 또는 자택에서 모니터링 중\n⚠️특히, 5.25.(월) 추가 확진된 6번 및 7번 환자는 1번 확진자(사망)와 접촉한 캄팔라 소재 민간병원 의사로 확인\n2. 최근 확진 사례가 환자 이송, 의료기관 진료, 보건의료 종사자 감염 등과 관련되어 있어 의료기관 방문 시 각별한 주의가 필요한 상황입니다.\nㅇ 특히 Kampala 등 주요 도시의 병원, 응급실, 약국 등에서 발열·구토·설사 등 의심 증상이 있는 환자 또는 접촉자가 방문할 가능성을 배제하기 어려움\n🔺에볼라는 주로 감염자의 혈액·체액·분비물 또는 오염된 물품과의 직접 접촉을 통해 전파되므로 타인과의 악수 및 포옹 등 자제 필요\n3. 따라서 우리 국민들께서는 불필요한 병원 및 의료기관 방문을 가능한 자제하여 주시고, 부득이하게 방문해야 하는 경우 마스크 착용 및 손소독 등 반드시 개인 방역수칙을 철저히 준수하여 주시기 바랍니다.",
       "summary": "* 2026년 5월 25일 기준, 우간다 내 에볼라 확진자는 총 7명(사망 1명 포함)이며, 신규 확진자 2명은 캄팔라 소재 민간 의료기관에서 근무하는 보건의료 종사자입니다.\n* 현재까지 광범위한 지역사회 전파는 확인되지 않았으나, 의료기관 내 노출 가능성에 대한 주의가 필요합니다.\n* 에볼라는 주로 감염자의 혈액, 체액, 분비물 또는 오염된 물품과의 직접 접촉을 통해 전파됩니다.\n* 외교부는 우간다 전역에 특별여행주의보를 발령했으며, 우간다-민주콩고(DRC) 접경지역 방문을 자제할 것을 권고합니다.\n* 우간다 체류 국민들은 의심 증상자와의 접촉을 피하고, 손 씻기 등 개인위생을 철저히 하며, 불필요한 신체 접촉을 자제하는 등 예방 수칙을 준수해야 합니다.\n* 발열, 두통 등 의심 증상자와의 접촉을 피하고, 환자의 혈액, 체액, 분비물 및 사용 물품 접촉을 금지해야 합니다.",
       "is_new": false
+    },
+    {
+      "id": "no_[DLO] 소통 내용 | 2026-05-25.txt",
+      "title": "DLO 업데이트 (5.25)",
+      "type": "no",
+      "type_name": "NO 업데이트",
+      "date": "2026-05-25",
+      "url": "",
+      "body": "캄팔라 사무소 정상 운영 중. 현지 직원 전원 안전 확인됨.\n5.23 발표된 신규 확진 케이스 5건 press release 공유함.\nNO 내부적으로는 아직 에볼라의 큰 영향을 체감하지 못하고 있음.\n내부적인 변화가 감지되거나 추가 press release가 있을 시 공유 예정.",
+      "summary": "• 우간다 캄팔라 사무소는 현재 정상 운영 중이며, 모든 현지 직원의 안전이 확인되었습니다.\n• 5월 23일 발표된 신규 확진 케이스는 5건입니다.\n• 현재까지 내부적으로 에볼라의 큰 영향은 체감되지 않고 있습니다.\n• 추가적인 변화나 공식 발표가 있을 경우 즉시 공유될 예정입니다.\n• 현재로서는 특별한 권고 행동 지침은 없으나, 상황 변화에 대한 지속적인 모니터링이 필요합니다.",
+      "is_new": true
     },
     {
       "id": "ATC0000000048524",
@@ -47,15 +69,15 @@
       "is_new": false
     },
     {
-      "id": "gc_WV_Ebola_Advisory_2026-05-21.pdf",
-      "title": "[GC] WV Ebola Advisory 2026-05-21",
+      "id": "gc_WV_Ebola_Advisory | 2026-05-21.pdf",
+      "title": "[GC] WV Ebola Advisory | 2026-05-21",
       "type": "gc",
       "type_name": "GC 업데이트",
       "date": "2026-05-21",
       "url": "",
       "body": "WV INTERNAL  \n Global Advisory: Ebola \n \nEffective from: 21 May 2026 \nValid until: Further notice \nApplies to: All staff travelling for World Vision (WV) business purposes. \n \nThis advisory provides context, health guidance, and operational advice in response to the escalating Ebola \noutbreak in the Democratic Republic of the Congo (DRC) and Uganda. \n \nTRAVEL STANCE  \n \nDefer ALL non-essential travel to: DRC and Uganda. \nEssential travel may proceed with enhanced precautions following approval from the National Director (ND) in \nconsultation with the RSD. Staff should anticipate disruption and maintain contingency options. \n \nSuspend ALL travel to: Ituri Province, North Kivu, South Kivu, and all officially designated outbreak zones . \nMission-critical travel requires approval from the DRC National Director (ND) or Regional Leader (RL) in \nconsultation with the Regional Security Director (RSD). \n \nIn-country personnel: \nDefer ALL non-essential movement to outbreak-affected areas. Operational and response-related travel should \nonly proceed where necessary, approved, and conducted in line with public health directives and WV security \nguidance. \n \nADVICE \n \n• Travel necessity: All planned travel to DRC and Uganda should be critically reviewed and only proceed where \noperationally essential and appropriately approved. \n• Health precautions: Avoid close contact with individuals displaying symptoms of illness and avoid contact \nwith bodily fluids, contaminated materials, or human remains. Practice good hand hygiene through regular \nhandwashing and use of alcohol-based hand sanitiser. Avoid consumption of bushmeat. \n• Traveller guidance: Staff should seek medical advice immediately if symptoms develop during or following \ntravel. Staff returning from outbreak-affected areas should self-monitor for symptoms for 21 days following \ndeparture from affected locations. \n• Flight & border disruption: Enhanced health screening, quarantine requirements, and short-notice travel \ndisruption remain possible across the region. Border closures and additional entry restrictions may be \nimplemented with limited notice. \n• Management responsibilities: Leaders and managers should review upcoming travel plans and defer non -\nessential travel to affected areas where operationally feasible. \n• Monitoring & escalation: Monitor all updates issued by SSR, WHO, local authorities, and WV security teams. \nNotify your manager or security focal point immediately if assistance is required.  \nSYMPTOMS AND TRANSMISSION \n \nBundibugyo virus disease (BVD) is a form of Ebola disease transmitted through direct contact with bodily fluids, \ncontaminated materials, infected individuals, or infected animals. There is currently no approved vaccine or \ntargeted treatment available for the Bundibugyo strain of Ebola virus, making early detection, symptom \nmonitoring, and infection prevention measures particularly important. Symptoms may appear between two and 21 \ndays following exposure and can include: \n \n• Fever \n• Fatigue and weakness \n• Headache and muscle pain \n WV INTERNAL  \n• Vomiting and diarrhoea \n• Abdominal pain \n• Unexplained bleeding or bruising in severe cases \n \nStaff experiencing symptoms or requiring medical advice or assistance while travelling internationally should \ncontact the 24/7 AIG emergency assistance hotline for confidential support and referral guidance. \nCONTEXT  \n \nOn 17 May 2026, the World Health Organization (WHO) declared the current Bundibugyo virus disease (BVD) \noutbreak affecting the DRC and Uganda a Public Health Emergency of International Concern (PHEIC).  As of 20 \nMay, more than 500 suspected cases and over 130 deaths have been reported, primarily concentrated in Ituri \nProvince in eastern DRC. Imported cases have also been identified in Kampala, Uganda.  \n \nThe outbreak is considered a high-risk regional public health event due to delayed outbreak detection, ongoing \ninsecurity in affected areas, population displacement, and the absence of an approved vaccine or targeted \ntreatment for the Bundibugyo strain. While the outbreak remains concentrated in eastern DRC, the risk of \nadditional regional spread remains elevated owing to population movement, porous borders, and challenges \nassociated with outbreak containment. Regional monitoring and preparedness measures  have also increased in \nneighbouring countries, particularly South Sudan and Rwanda. \n \nWHO, regional governments, and international partners are scaling up response measures across affected areas. \nWVI Health is participating in the Global Health Cluster working group to monitor the outbreak alongside ongoing \ninternal health, security, and operational coordination efforts.  \n \nWorld Vision continues to monitor the situation closely in consultation with public health authorities, medical  risk \nproviders, and travel risk partners. \n \nRESOURCES \n \n• World Health Organization (WHO) \n• US Centers for Disease Control and Prevention (CDC) \n• WV Travel Resources (wvcentral) \n• WV Ebola Category 3 Response (wvcentral) \n \nKEY CONTACTS \nCorne Swart (Regional Security Director SAR) corne_swart@wvi.org \nLev Domrachev (Regional Security Director EAR) lev_domrachev@wvi.org \nPhilippe Guiton (DRC National Director) Philippe_guiton@wvi.org \nJeremiah Nyagah (Uganda National Director) jeremiah_nyagah@wvi.org \nMatthew Pickard (Regional Leader SAR) matthew_pickard@wvi.org \nLilian Dodzo (Regional Leader EAR) Lilian_Dodzo@wvi.org \nHuw Davies (Travel Risk Manager) huw_davies@wvi.org \nNeil Bullock (Acting Partnership Leader – SSR) neil_bullock@wvi.org \n \n \nThis advisory remains in effect until formally updated or withdrawn. Any change in advisory status will be issued \nas a new advisory (superseding prior versions).",
-      "summary": "* 에볼라 발병이 심화됨에 따라 콩고민주공화국(DRC)과 우간다로의 모든 비필수 여행은 연기됩니다.\n* 이투리주, 북키부, 남키부 및 공식 지정된 모든 발병 지역으로의 모든 여행은 중단됩니다.\n* 현지 직원은 발병 지역으로의 모든 비필수 이동을 연기해야 하며, 필수적인 이동은 승인된 경우에만 진행해야 합니다.\n* 모든 직원은 아픈 사람과의 밀접 접촉, 체액 및 오염된 물질과의 접촉을 피하고, 손 위생을 철저히 하며, 부시미트 섭취를 피해야 합니다.\n* 발병 지역에서 돌아온 직원은 21일 동안 증상을 자가 모니터링해야 합니다.\n* 항공편 및 국경 폐쇄 등 여행 중단 가능성이 있으므로 대비해야 합니다.",
-      "is_new": false
+      "summary": "* 월드비전은 콩고민주공화국(DRC)과 우간다의 에볼라 확산에 대응하여 모든 비필수적인 DRC 및 우간다 여행을 연기합니다.\n* 이투리주, 북키부, 남키부 및 공식 지정된 모든 발병 지역으로의 모든 여행은 중단됩니다.\n* 현지 직원은 발병 지역으로의 모든 비필수적인 이동을 연기해야 하며, 필수적인 이동은 승인 및 지침에 따라 진행해야 합니다.\n* 모든 직원은 아픈 사람과의 밀접 접촉, 체액 및 오염 물질 접촉을 피하고, 손 위생을 철저히 하며, 부시미트 섭취를 피해야 합니다.\n* 여행 중 또는 후에 증상이 나타나면 즉시 의학적 조언을 구하고, 발병 지역에서 돌아온 직원은 21일 동안 증상을 자가 모니터링해야 합니다.\n* 항공편 및 국경 폐쇄 등 예기치 않은 여행 중단 가능성이 있으므로 대비해야 합니다.",
+      "is_new": true
     },
     {
       "id": "ATC0000000048523",
@@ -80,6 +102,17 @@
       "is_new": false
     },
     {
+      "id": "no_[NO] Ebola Virus Disease situation report | 2026-05-19.docx",
+      "title": "[NO] Ebola Virus Disease situation report | 2026-05-19",
+      "type": "no",
+      "type_name": "NO 업데이트",
+      "date": "2026-05-19",
+      "url": "",
+      "body": "Ebola Virus Disease (EVD) Situation Report – Uganda\nDate: 19 May 2026\nLocation: Uganda (with regional context from DRC)\nPrepared by: Benon Musasizi, Health and Nutrition Manager-World Vision Uganda\nEPIDEMIOLOGICAL SITUATION\nAs of mid-May 2026, Uganda is experiencing a limited Ebola event linked to a wider outbreak in the Democratic Republic of the Congo (DRC). The current situation is characterized by:\nUganda\nConfirmed cases: 2 (both linked to travel from DRC) \nDeaths: 1 \nTransmission: Imported; no confirmed widespread local transmission\nCases were detected in Kampala, including a fatal case of a Congolese national on 14 May 2026. \nWHO has declared the outbreak a Public Health Emergency of International Concern (PHEIC)\nThe risk in Uganda remains moderate but controlled, with strong surveillance and response systems activated. \nWHO notes that the two cases in Kampala had no apparent epidemiological link, raising concern about undetected transmission chains. \nRegional Context (DRC Outbreak)\nEpicentre: Ituri Province, eastern DRC\nSuspected cases: 336\nDeaths: 88\nConfirmed cases: 11 \nCross-border movement between DRC and Uganda has facilitated importation risk.\nVirology and Clinical Characteristics\nStrain: Bundibugyo ebolavirus\nKey concern: \nNo widely approved vaccine or specific treatment available\nCase fatality rate: estimated 25–50% historically \nTransmission occurs through direct contact with infected body fluids, not airborne spread \nThis strain is less studied compared to Zaire Ebola, complicating response efforts.\nPUBLIC HEALTH RISK ASSESSMENT\nNational Risk (Uganda)\nCurrent risk level: Moderate\nFactors increasing risk: \nCross-border mobility (trade, migration)\nDetection of cases in Kampala (urban setting)\nFactors reducing risk: \nRapid detection and isolation\nStrong surveillance system\nPrior outbreak experience\nUgandan authorities report that the situation is under control, with all known contacts traced and monitored. \nRegional and Global Risk\nWHO classifies the outbreak as a Public Health Emergency of International Concern PHEIC due to: \nCross-border spread\nUncertainty about true scale\nPotential for wider regional transmission \nRESPONSE ACTIONS\nGovernment of Uganda\nActivation of national emergency response mechanisms\nCase isolation and treatment in designated facilities\nContact tracing for all exposed individuals\nStrengthened border screening, especially along western borders\nPublic risk communication and community sensitization \nPartners (WHO, CDC, WVI, others)\nTechnical support in: \nSurveillance and laboratory diagnostics\nInfection prevention and control (IPC)\nCoordination of international response\nDeployment of expertise and logistics support \nPreparedness Context\nUganda has strong outbreak preparedness capacity, demonstrated by:\nSuccessful containment of the 2025 Sudan Ebola outbreak (14 cases, outbreak ended April 2025) \nEstablished systems: \nRapid response teams\nCommunity surveillance (VHTs)\nEmergency operations centres\nThese systems are currently being leveraged in the 2026 response.\nKey Challenges\nUnknown transmission chains (cases without clear linkage)\nLimited tools due to lack of vaccine for Bundibugyo strain\nHigh population mobility across porous borders\nPotential underreporting of cases in DRC, affecting risk estimation\nRecommendations\nFor Government and Health Sector\nMaintain intensive surveillance and screening\nScale up laboratory testing capacity\nStrengthen infection prevention in health facilities\nEnhance cross-border coordination with DRC and South Sudan\nFor Communities\nReport suspected symptoms early\nAvoid contact with bodily fluids of suspected cases\nFollow hygiene and public health guidance\nCONCLUSION\nEbola in Uganda (May 2026) remains limited and largely imported, but the situation is dynamic due to an active neighbouring outbreak in DRC. Uganda’s strong response capacity has so far prevented widespread local transmission, but continued vigilance is critical given the high-risk regional context and lack of vaccines for the circulating strain. Given the current situation, no travel or trade restrictions are currently recommended.",
+      "summary": "",
+      "is_new": true
+    },
+    {
       "id": "ATC0000000048521",
       "title": "(우간다) 에볼라 추가 확진자 발생 관련 안전공지(5.18)",
       "type": "safetyNtc",
@@ -88,39 +121,6 @@
       "url": "https://www.0404.go.kr/bbs/safetyNtc/ATC0000000048521/detail",
       "body": "1. 세계보건기구(WHO)는 5.17.(일) 우간다 내 에볼라(Ebola Virus Disease) 확진자가 총 2명으로 증가하였다고 발표하였습니다.\nㅇ WHO에 따르면, 우간다 내 확진 사례 2건은 각각 5.15.(금) 및 5.16.(토) 캄팔라에서 확인되었으며, 이 중 1명은 병원에서 사망\n- 보건당국은 확진자들이 모두 민주콩고(DRC)에서 우간다로 이동한 사람들로 확인됨에 따라, 접촉자 추적, 격리 및 감시 조치를 시행 중\n※ 우간다 정부는 에볼라 확산 우려에 따라 6.3. 예정된 우간다 순교자의 날(Uganda Martyrs’ Day) 행사 를 연기한다고 발표\n2. WHO는 5.17(일) DRC 및 우간다 내 에볼라 발생 상황과 관련하여 국제적 공중보건 비상사태(PHEIC)를 선언하였습니다.\nㅇ WHO는 DRC 동부 Ituri 지역을 중심으로 에볼라 확진 및 의심 사례가 증가하고 있으며, 국경 간 이동으로 인한 인접국 확산 위험이 있다고 평가\n- 미국 질병통제예방센터(CDC)는 5.15.(금) 우간다에 대해 에볼라 관련 여행보건경보 1단계(Level 1: 일반적 예방수칙 준수)를 발령\n3. 우간다 체류 우리 국민들께서는 아래 안전수칙을 준수하여 주시기 바랍니다.\nㅇ 손 씻기 및 손 소독 등 개인위생 철저\nㅇ 발열, 구토, 설사, 출혈 등 의심 증상자와의 접촉 자제\nㅇ DRC 접경지역 및 우간다 서부 국경지역 이동 시 각별한 주의\nㅇ 불필요한 군중 밀집 장소 방문 자제\n[긴급 연락처]",
       "summary": "• 우간다에서 에볼라 확진자가 총 2명으로 증가했으며, 이들은 모두 민주콩고(DRC)에서 유입되었습니다.\n• 세계보건기구(WHO)는 DRC 및 우간다 내 에볼라 발생 상황에 대해 국제적 공중보건 비상사태(PHEIC)를 선언했습니다.\n• 미국 질병통제예방센터(CDC)는 우간다에 에볼라 관련 여행보건경보 1단계를 발령했습니다.\n• 우간다 체류 국민들은 손 씻기 등 개인위생을 철저히 하고, 의심 증상자와의 접촉 및 불필요한 군중 밀집 장소 방문을 자제해야 합니다.\n• 특히 DRC 접경지역 및 우간다 서부 국경지역 이동 시 각별한 주의가 필요합니다.",
-      "is_new": false
-    },
-    {
-      "id": "no_[NO] Ebola Virus Disease situation report (2026-05-19).docx",
-      "title": "[NO] Ebola Virus Disease situation report (2026-05-19)",
-      "type": "no",
-      "type_name": "NO 업데이트",
-      "date": "",
-      "url": "",
-      "body": "Ebola Virus Disease (EVD) Situation Report – Uganda\nDate: 19 May 2026\nLocation: Uganda (with regional context from DRC)\nPrepared by: Benon Musasizi, Health and Nutrition Manager-World Vision Uganda\nEPIDEMIOLOGICAL SITUATION\nAs of mid-May 2026, Uganda is experiencing a limited Ebola event linked to a wider outbreak in the Democratic Republic of the Congo (DRC). The current situation is characterized by:\nUganda\nConfirmed cases: 2 (both linked to travel from DRC) \nDeaths: 1 \nTransmission: Imported; no confirmed widespread local transmission\nCases were detected in Kampala, including a fatal case of a Congolese national on 14 May 2026. \nWHO has declared the outbreak a Public Health Emergency of International Concern (PHEIC)\nThe risk in Uganda remains moderate but controlled, with strong surveillance and response systems activated. \nWHO notes that the two cases in Kampala had no apparent epidemiological link, raising concern about undetected transmission chains. \nRegional Context (DRC Outbreak)\nEpicentre: Ituri Province, eastern DRC\nSuspected cases: 336\nDeaths: 88\nConfirmed cases: 11 \nCross-border movement between DRC and Uganda has facilitated importation risk.\nVirology and Clinical Characteristics\nStrain: Bundibugyo ebolavirus\nKey concern: \nNo widely approved vaccine or specific treatment available\nCase fatality rate: estimated 25–50% historically \nTransmission occurs through direct contact with infected body fluids, not airborne spread \nThis strain is less studied compared to Zaire Ebola, complicating response efforts.\nPUBLIC HEALTH RISK ASSESSMENT\nNational Risk (Uganda)\nCurrent risk level: Moderate\nFactors increasing risk: \nCross-border mobility (trade, migration)\nDetection of cases in Kampala (urban setting)\nFactors reducing risk: \nRapid detection and isolation\nStrong surveillance system\nPrior outbreak experience\nUgandan authorities report that the situation is under control, with all known contacts traced and monitored. \nRegional and Global Risk\nWHO classifies the outbreak as a Public Health Emergency of International Concern PHEIC due to: \nCross-border spread\nUncertainty about true scale\nPotential for wider regional transmission \nRESPONSE ACTIONS\nGovernment of Uganda\nActivation of national emergency response mechanisms\nCase isolation and treatment in designated facilities\nContact tracing for all exposed individuals\nStrengthened border screening, especially along western borders\nPublic risk communication and community sensitization \nPartners (WHO, CDC, WVI, others)\nTechnical support in: \nSurveillance and laboratory diagnostics\nInfection prevention and control (IPC)\nCoordination of international response\nDeployment of expertise and logistics support \nPreparedness Context\nUganda has strong outbreak preparedness capacity, demonstrated by:\nSuccessful containment of the 2025 Sudan Ebola outbreak (14 cases, outbreak ended April 2025) \nEstablished systems: \nRapid response teams\nCommunity surveillance (VHTs)\nEmergency operations centres\nThese systems are currently being leveraged in the 2026 response.\nKey Challenges\nUnknown transmission chains (cases without clear linkage)\nLimited tools due to lack of vaccine for Bundibugyo strain\nHigh population mobility across porous borders\nPotential underreporting of cases in DRC, affecting risk estimation\nRecommendations\nFor Government and Health Sector\nMaintain intensive surveillance and screening\nScale up laboratory testing capacity\nStrengthen infection prevention in health facilities\nEnhance cross-border coordination with DRC and South Sudan\nFor Communities\nReport suspected symptoms early\nAvoid contact with bodily fluids of suspected cases\nFollow hygiene and public health guidance\nCONCLUSION\nEbola in Uganda (May 2026) remains limited and largely imported, but the situation is dynamic due to an active neighbouring outbreak in DRC. Uganda’s strong response capacity has so far prevented widespread local transmission, but continued vigilance is critical given the high-risk regional context and lack of vaccines for the circulating strain. Given the current situation, no travel or trade restrictions are currently recommended.",
-      "summary": "• 우간다는 2026년 5월 중순 현재 콩고민주공화국(DRC)에서 유입된 에볼라 바이러스 질병(EVD) 확진자 2명(사망 1명)이 발생하여 제한적인 에볼라 사태를 겪고 있습니다.\n• 두 사례 모두 캄팔라에서 발견되었으며, 역학적 연관성이 없어 미확인 전염 사슬에 대한 우려가 제기되고 있습니다.\n• 세계보건기구(WHO)는 이 발병을 국제적 공중보건 비상사태(PHEIC)로 선포했으며, 우간다의 위험 수준은 중간이지만 통제되고 있습니다.\n• 우간다 정부는 국가 비상 대응 메커니즘을 활성화하고, 환자 격리 및 치료, 접촉자 추적, 국경 검역 강화, 대중 위험 소통 및 지역사회 인식 제고 등의 조치를 취하고 있습니다.\n• 현재 널리 승인된 백신이나 특정 치료법이 없으며, 이 분디부교 에볼라바이러스 변종은 자이르 에볼라에 비해 덜 연구되어 대응 노력을 복잡하게 만듭니다.",
-      "is_new": false
-    },
-    {
-      "id": "no_[DLO] 소통 내용 (2026-05-26).txt",
-      "title": "[DLO] 소통 내용 (2026-05-26)",
-      "type": "no",
-      "type_name": "NO 업데이트",
-      "date": "",
-      "url": "",
-      "body": "DRC currently is vulnerable, and the challenge is that most people at the eastern side of DRC access medical services from Uganda.\nThis may make Uganda a hotspot too, but the good thing is that Uganda has build a good tracking system, which makes the Ebola prevalence still low.\n6월 예정된 출장 2건(콘2팀, UX팀)은 예정대로 진행된다는 전제 하에 준비하기로 함.\n동시에 후속지원(콘2팀, 미셀팀)도 계속해서 진행 팔로업 중.\nDLO가 감염되지 않도록 각별히 주의 요청하였으며, 가능하다면 후속지원은 근처 ADP 협조를 얻는 쪽으로 논의함. 필요 시 DLO 매니저가 ADP 매니저에게 협조요청 예정.",
-      "summary": "• 현재 DRC 동부 지역 주민들이 우간다에서 의료 서비스를 이용하고 있어 우간다가 에볼라 확산의 위험 지역이 될 수 있습니다.\n• 다행히 우간다는 우수한 추적 시스템을 구축하여 에볼라 유병률을 낮은 수준으로 유지하고 있습니다.\n• 6월 예정된 콘2팀과 UX팀의 출장은 계획대로 준비하며, 콘2팀과 미셀팀의 후속 지원도 계속 진행 중입니다.\n• DLO의 감염 예방을 위해 각별한 주의가 요청되었으며, 후속 지원은 가능한 경우 인근 ADP의 협조를 얻는 방안을 논의 중입니다.\n• 필요 시 DLO 매니저가 ADP 매니저에게 협조를 요청할 예정입니다.",
-      "is_new": false
-    },
-    {
-      "id": "no_[DLO] 소통 내용 (2026-05-25).txt",
-      "title": "[DLO] 소통 내용 (2026-05-25)",
-      "type": "no",
-      "type_name": "NO 업데이트",
-      "date": "",
-      "url": "",
-      "body": "캄팔라 사무소 정상 운영 중. 현지 직원 전원 안전 확인됨.\n5.23 발표된 신규 확진 케이스 5건 press release 공유함.\nNO 내부적으로는 아직 에볼라의 큰 영향을 체감하지 못하고 있음.\n내부적인 변화가 감지되거나 추가 press release가 있을 시 공유 예정.",
-      "summary": "• 2026년 5월 25일 기준, 캄팔라 사무소는 정상 운영 중이며 모든 현지 직원의 안전이 확인되었습니다.\n• 5월 23일 발표된 신규 확진 케이스는 5건입니다.\n• 현재까지 내부적으로 에볼라의 큰 영향은 체감되지 않고 있습니다.\n• 추가적인 변화나 공식 발표가 있을 경우 공유될 예정입니다.",
       "is_new": false
     }
   ]

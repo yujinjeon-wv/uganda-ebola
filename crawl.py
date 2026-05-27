@@ -305,7 +305,7 @@ def run():
         body     = cached.get("body","")
         summary  = cached.get("summary","")
 
-        if is_new or not body:
+        if (is_new or not body or "<p " in body or "<span" in body) and not summary:
             print(f"\n  글: {title[:50]}")
             body = fetch_detail_body(post_id, pst_type)
             if gemini_key and body:
@@ -336,6 +336,11 @@ def run():
                     and not p["id"].startswith("no_")]
     
     # 날짜순 정렬 (최신순)
+    api_ids = {p["id"] for p in mofa_results}
+    manual_posts = [p for p in existing.get("posts", []) 
+                    if p["id"] not in api_ids 
+                    and not p["id"].startswith("gc_") 
+                    and not p["id"].startswith("no_")]
     all_results = mofa_results + manual_posts + gc_results + no_results
     all_results.sort(key=lambda x: x.get("date",""), reverse=True)
 

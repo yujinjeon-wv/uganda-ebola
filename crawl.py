@@ -46,7 +46,7 @@ def summarize_with_gemini(title, content, source_type, date, api_key):
             f"제목: {title}\n날짜: {date}\n내용:\n{content[:2500]}\n\n"
             f"위 내용을 한국어로 4~6문장으로 요약해주세요.\n"
             f"현재 상황, 확진자 수, 권고 행동 지침을 중심으로 써주세요.\n"
-            f"마크다운 없이 plain text로만 답변하세요."
+            f"불렛포인트(•) 항목으로 간결하게 답변하세요. 마크다운 없이 plain text로만 답변하세요."
         )
     else:
         prompt = (
@@ -55,7 +55,7 @@ def summarize_with_gemini(title, content, source_type, date, api_key):
             f"위 공지의 핵심 내용을 4~6문장으로 요약해주세요.\n"
             f"확진자 수, 발생 지역, 권고 행동 지침을 중심으로 써주세요.\n"
             f"비상연락처, 행정 안내는 생략하세요.\n"
-            f"마크다운 없이 plain text로만 답변하세요."
+            f"불렛포인트(•) 항목으로 간결하게 답변하세요. 마크다운 없이 plain text로만 답변하세요."
         )
     for model in GEMINI_MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"

@@ -2,9 +2,9 @@ name: 우간다 안전공지 크롤러
 
 on:
   schedule:
-    - cron: '0 23 * * *'
-    - cron: '0 5 * * *'
-    - cron: '0 12 * * *'
+    - cron: '30 23 * * *'
+    - cron: '30 4 * * *'
+    - cron: '30 11 * * *'
   workflow_dispatch:
 
 permissions:

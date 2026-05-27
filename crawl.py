@@ -147,7 +147,7 @@ def fetch_detail_body(pst_no, pst_type):
         return ""
 
 def fetch_list():
-    res = requests.post(LIST_API, headers=HEADERS, json={"pageSize": 200}, timeout=15)
+    res = requests.post(LIST_API, headers=HEADERS, json={"pageSize": 500}, timeout=15)
     res.raise_for_status()
     return res.json().get("data", [])
 

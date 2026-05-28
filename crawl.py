@@ -188,7 +188,7 @@ def load_gc_posts(gemini_key, existing_map):
         cached  = existing_map.get(post_id, {})
         body    = cached.get("body", "")
         summary = cached.get("summary", "")
-        if not body:
+        if not body or not summary:
             print(f"\n  GC PDF: {filename}")
             body = read_pdf(filepath)
             print(f"    본문 획득: {len(body)}자")
@@ -239,7 +239,7 @@ def load_no_posts(gemini_key, existing_map):
         summary  = cached.get("summary", "")
         date, title = "", filename.replace(".txt","").replace(".docx","").replace("_"," ")
 
-        if not body:
+        if not body or not summary:
             print(f"\n  NO 업데이트: {filename}")
             try:
                 if filename.endswith(".txt"):

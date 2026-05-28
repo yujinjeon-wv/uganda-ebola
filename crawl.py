@@ -118,7 +118,7 @@ def parse_date_from_title(title, fallback_reg_dt):
 def fetch_detail_body(pst_no, pst_type):
     type_path = {
         "safetyNtc": "safetyNtc",
-        "embsyNtc": "safetyNtc",
+        "embsyNtc": "embsyNtc",
         "travelAlertAjmt": "travelAlertAjmt",
     }
     path = type_path.get(pst_type, "safetyNtc")
@@ -327,13 +327,6 @@ def run():
     # 3. NO 업데이트
     print("\n=== NO 업데이트 (TXT/DOCX) ===")
     no_results = load_no_posts(gemini_key, existing_map)
-
-    # 수동으로 추가된 글 유지 (API에서 못 잡은 글)
-    api_ids = {p["id"] for p in mofa_results}
-    manual_posts = [p for p in existing.get("posts", []) 
-                    if p["id"] not in api_ids 
-                    and not p["id"].startswith("gc_") 
-                    and not p["id"].startswith("no_")]
     
     # 날짜순 정렬 (최신순)
     api_ids = {p["id"] for p in mofa_results}

@@ -1,7 +1,7 @@
 name: 우간다 안전공지 크롤러
 
 on:
-schedule:
+  schedule:
     - cron: '*/30 * * * *'
   workflow_dispatch:
 

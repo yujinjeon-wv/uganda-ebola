@@ -239,6 +239,15 @@ def load_no_posts(gemini_key, existing_map):
         summary  = cached.get("summary", "")
         date, title = "", filename.replace(".txt","").replace(".docx","").replace("_"," ")
 
+         # 날짜는 항상 추출 시도
+        if filename.endswith(".txt"):
+            date_tmp, title_tmp, _ = parse_no_txt(filepath)
+            if date_tmp: date = date_tmp
+            if title_tmp: title = title_tmp
+        elif filename.endswith(".docx"):
+            m = re.search(r"(\d{4})[-_](\d{2})[-_](\d{2})", filename)
+            if m: date = f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+
         if not body or not summary:
             print(f"\n  NO 업데이트: {filename}")
             try:
